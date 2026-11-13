@@ -38,7 +38,7 @@ public class ClienteController {
 		dao.inserir(cliente);
 		model.addAttribute("mensagem", MSG_SUCESSO_CADASTRO_CLIENTE);
 		
-		return "redirect:paginaInicial";
+		return "pagina-inicial";
 	}
 
 }

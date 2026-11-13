@@ -5,20 +5,18 @@ import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
-import jakarta.validation.constraints.Pattern;
 
 @Entity
 public class Cliente {	
 	@Id
 	@SequenceGenerator(name = "id_cliente", sequenceName = "seq_cliente", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_agendamento")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_cliente")
 	private Long id;
 	
 	@Column(unique = true, nullable = false, length = 11)
@@ -31,11 +29,7 @@ public class Cliente {
 	private String email;
 	
 	@Column(nullable = false)
-	@Pattern(regexp = "dd/MM/yyyy")
 	private LocalDate dataNascimento;
-	
-	@Embedded
-	private Contato contato;
 	
 	/** Defini mappedBy para que o hibernate saiba que a tabela {@link Cliente} não guarda informações físicas sobre as bicicletas*/
 	@OneToMany(mappedBy = "proprietario", cascade = CascadeType.ALL)
@@ -80,13 +74,5 @@ public class Cliente {
 	public void setDataNascimento(LocalDate dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
-
-	public Contato getContato() {
-		return contato;
-	}
-
-	public void setContato(Contato contato) {
-		this.contato = contato;
-	}
-
+	
 }

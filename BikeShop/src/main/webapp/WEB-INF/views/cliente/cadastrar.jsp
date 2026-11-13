@@ -22,7 +22,10 @@
 		</div>
 		<div>
 			<label for="data-nascimento">Data de Nascimento: </label>
-			<input id="data-nascimento" name="data-nascimento" type="date">
+			<input id="data-nascimento" name="dataNascimento" type="date">
+		</div>
+		<div>
+			<input type="submit" value="Salvar">
 		</div>
 	</form>
 </body>
