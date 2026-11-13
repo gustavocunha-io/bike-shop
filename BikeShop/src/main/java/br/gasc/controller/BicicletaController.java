@@ -33,13 +33,14 @@ public class BicicletaController {
 	}
 	
 	@RequestMapping(value = "salvarBicicleta")
-	public String cadastrar(@Valid Bicicleta bicicleta, 
+	public String cadastrar(@Valid Bicicleta bicicleta, BindingResult bindingResult,
 	  @RequestParam(name = "cpfProprietario", required = false)
-	  String cpfProprietario, BindingResult bindingResult,
+	  String cpfProprietario,
 	  Model model,
 	  RedirectAttributes redirectAttributes) {
-		if(bindingResult.hasErrors())
+		if(bindingResult.hasErrors()) {
 			return "bicicleta/cadastrar";
+		}
 		
 		try {
 			if(cpfProprietario != null) {
@@ -57,8 +58,10 @@ public class BicicletaController {
 			
 			return "redirect:/bicicleta/listarBicicletas";
 		} catch (RegraNegocioException regraNegocioException) {
+			TipoBicicletaService bicicletaService = new TipoBicicletaService();
+			model.addAttribute("tipoBicicletasList", bicicletaService.listarTipoBicicleta());
 			model.addAttribute("erro", regraNegocioException.getMessage());
-			return "bicicleta/listar";			
+			return "bicicleta/cadastrar";			
 		}
 	}
 	

@@ -1,7 +1,5 @@
 package br.gasc.controller;
 
-import java.security.Provider.Service;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,7 +36,7 @@ public class ServicoController {
 		try {
 			servicoService.cadastrarServico(servico);
 			redirectAttributes.addAttribute("sucesso", MSG_SUCESSO_CADASTRO_SERVICO);
-			return "redirect:/servico/listarServico";
+			return "redirect:/servico/listarServicos";
 		} catch (RegraNegocioException regraNegocioException) {
 			model.addAttribute("erro", regraNegocioException.getMessage());
 			return "servico/cadastrar";

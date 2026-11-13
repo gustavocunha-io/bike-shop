@@ -1,20 +1,17 @@
 package br.gasc.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.SequenceGenerator;
-import jakarta.validation.constraints.Size;
 
 @Entity
 public class OrdemServico {
@@ -23,16 +20,47 @@ public class OrdemServico {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_ordem_servico")
 	private Long id;
 	
-	@Size(min = 1, message = "A OS deve possuir pelo menos 1 serviço")
-	@OneToMany(mappedBy = "ordemServico", cascade = CascadeType.ALL)
-	private List<ItemServicoOS> itensServicosList;
-	
+	@ManyToOne
+	@JoinColumn(name = "cliente_id", nullable = false)
+	private Cliente cliente;
+
 	@ManyToOne
 	@JoinColumn(name = "bicicleta_id", nullable = false)
 	private Bicicleta bicicleta;
 	
-	@ManyToOne
-	@JoinColumn(name = "cliente_id", nullable = false)
-	private Cliente cliente;
+	@OneToMany(mappedBy = "ordemServico", cascade = CascadeType.ALL)
+	private List<ItemOrdemServico> servicosList = new ArrayList<ItemOrdemServico>();
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+	public Bicicleta getBicicleta() {
+		return bicicleta;
+	}
+
+	public void setBicicleta(Bicicleta bicicleta) {
+		this.bicicleta = bicicleta;
+	}
+
+	public List<ItemOrdemServico> getServicosList() {
+		return servicosList;
+	}
+
+	public void setServicosList(List<ItemOrdemServico> servicosList) {
+		this.servicosList = servicosList;
+	}
 	
 }

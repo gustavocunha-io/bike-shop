@@ -25,7 +25,7 @@ public class ServicoService {
 		if(servico.getTipo() == null || servico.getTipo().isBlank())
 			throw new RegraNegocioException(MSG_ERRO_TIPO_SERVICO_NULO);
 		
-		if(servicoDAO.pesquisar(servico.getId()) != null)
+		if(servico.getId() != null && servicoDAO.pesquisar(servico.getId()) != null)
 			throw new RegraNegocioException(MSG_ERRO_SERVICO_DUPLICADO);
 		
 		servicoDAO.inserir(servico);

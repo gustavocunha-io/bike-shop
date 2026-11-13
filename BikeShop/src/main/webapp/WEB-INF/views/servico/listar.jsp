@@ -138,10 +138,10 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="servico" items="${ servicoList }">
+							<c:forEach var="servico" items="${ servicosList }">
 								<tr>
 									<td>${ servico.id }</td>
-									<td>${ servico.descricao }</td>
+									<td>${ servico.tipo }</td>
 									<td><fmt:formatNumber value="${ servico.valor }" type="currency"></fmt:formatNumber></td>
 								</tr>
 							</c:forEach>

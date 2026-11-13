@@ -1,6 +1,5 @@
 package br.gasc.dao;
 
-import java.util.List;
 import java.util.Optional;
 
 import br.gasc.model.Cliente;

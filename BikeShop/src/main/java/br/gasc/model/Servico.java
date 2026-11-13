@@ -7,16 +7,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 
 /*
- * CORRIGIR A CONTRUÇÃO LÓGICA DA TABELA DE MODO QUE SERVICO SEJA INDEPENDENTE DE
+ * CORRIGIR A CONSTRUÇÃO LÓGICA DA TABELA DE MODO QUE SERVICO SEJA INDEPENDENTE DE
  * ORDEM DE SERVIÇO 
  */
-
 @Entity
 public class Servico {
 	@Id
@@ -33,9 +29,6 @@ public class Servico {
 	
 	@Column(nullable = false, precision = 10, scale = 2)
 	private BigDecimal valor;
-	
-	@ManyToOne
-	private OrdemServico ordemServico;
 
 	public Long getId() {
 		return id;

@@ -9,12 +9,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 
 @Entity
-public class Cliente {	
+public class Cliente {
 	@Id
 	@SequenceGenerator(name = "id_cliente", sequenceName = "seq_cliente", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_cliente")

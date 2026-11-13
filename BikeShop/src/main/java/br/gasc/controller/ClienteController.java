@@ -39,8 +39,7 @@ public class ClienteController {
 		} catch (RegraNegocioException regraNegocioException) {
 			model.addAttribute("erro", regraNegocioException.getMessage());
 			return "cliente/cadastrar";
-		}
-		
+		}	
 	}
 	
 	@RequestMapping(value = "listarClientes")

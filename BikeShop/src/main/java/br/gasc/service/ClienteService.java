@@ -40,7 +40,11 @@ public class ClienteService {
 	
 	public Cliente pesquisarPorCpf(String cpf) {
 		if(cpf == null || cpf.isBlank())
-			throw new RegraNegocioException("okclkd");
+			throw new RegraNegocioException(MSG_ERRO_CPF_NULO);
+		
+		if(clienteDao.buscarPorCpf(cpf).isEmpty())
+			throw new RegraNegocioException(MSG_ERRO_CPF_INEXISTENTE);
+		
 		return clienteDao.buscarPorCpf(cpf).get();
 	}
 	

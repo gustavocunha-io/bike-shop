@@ -141,19 +141,21 @@
 		<div class="campo">
 			<label>Tipo Bicicleta</label>
 			<select name="tipoBicicleta.id">
-				<option selected="selected">selecionar</option>
+				<option value="">selecionar</option>
 				<c:forEach var="tipoBicicleta" items="${ tipoBicicletasList }">				
-					<option value="${ tipoBicicleta.id }">${ tipoBicicleta.nome }</option>
+					<option value="${ tipoBicicleta.id }" ${ bicicleta.tipoBicicleta.id == tipoBicicleta.id ? 'selected' : '' }>
+						${ tipoBicicleta.nome }
+					</option>
 				</c:forEach>
 			</select>
 		</div>
 		<div class="campo">
 			<label for="tamanho-quadro">Tamanho Quadro:</label>
-			<input id="tamanho-quadro" name="tamanhoQuadro" type="number" value="${ bicicleta.email }" required="required">
+			<input id="tamanho-quadro" name="tamanhoQuadro" type="number" value="${ bicicleta.tamanhoQuadro }" required="required">
 		</div>
 		<div class="campo">
 			<label for="cpf-proprietario">CPF do Proprietário:</label>
-			<input id="cpf-proprietario" name="cpfProprietario" type="text">
+			<input id="cpf-proprietario" name="cpfProprietario" type="text" value="${ bicicleta.proprietario.cpf }">
 		</div>
 		<div class="acoes">
 			<input type="submit" value="Salvar">
