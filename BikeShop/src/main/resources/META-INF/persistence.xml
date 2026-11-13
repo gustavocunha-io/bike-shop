@@ -14,13 +14,14 @@
         <class>br.gasc.modelo.Cliente</class>
         <class>br.gasc.modelo.Bicicleta</class>
         <class>br.gasc.modelo.Servico</class>
+        <class>br.gasc.modelo.OrdemServico</class>
 
         <properties>
             <!-- Configurações de Conexão com o PostgreSQL -->
             <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver" />
             <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/bike-shop" />
-            <property name="jakarta.persistence.jdbc.user" value="" />
-            <property name="jakarta.persistence.jdbc.password" value="" />
+            <property name="jakarta.persistence.jdbc.user" value="gustavo" />
+            <property name="jakarta.persistence.jdbc.password" value="BD@049076/11/2004" />
 
             <!-- Configurações do Hibernate -->
             <property name="hibernate.hbm2ddl.auto" value="update" />

@@ -19,7 +19,7 @@ public class Interceptor implements HandlerInterceptor {
 		
 		response.sendRedirect("loginAdmin");
 		
-		return HandlerInterceptor.super.preHandle(request, response, handler);
+		return false;
 	}
 
 	

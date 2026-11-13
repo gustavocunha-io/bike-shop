@@ -1,5 +1,7 @@
 package br.gasc.dao;
 
+import java.util.Optional;
+
 import br.gasc.model.Administrador;
 import br.gasc.utils.HashSenhaUtil;
 import jakarta.persistence.EntityManager;
@@ -15,24 +17,19 @@ public class AdministradorDao {
 		this.entityManager = new JPAUtil().getEntityManager();
 	}
 	
-	public boolean validarLogin(Administrador administrador) {
-		if(administrador == null)
-			throw new IllegalArgumentException("O administrador não deve ser nulo");
-		
+	public Optional<Administrador> buscarPorLogin(String login) {
 		try {
 			TypedQuery<Administrador> query = entityManager.createQuery("SELECT a FROM Administrador a WHERE a.login = :login", Administrador.class); 		
-			query.setParameter("login", administrador.getLogin());
-			
+			query.setParameter("login", login);
 			Administrador administradorBanco = query.getSingleResult();
+			return Optional.of(administradorBanco);
 			
-			return HashSenhaUtil.verificarSenha(administrador.getSenha(), administradorBanco.getSenha());			
 		} catch (NoResultException noResultException) {
-			noResultException.printStackTrace();
-			return false;
+			return Optional.empty();
+			
 		} finally {
 			if(entityManager != null && entityManager.isOpen())
 				entityManager.close();
 		}
 	}
-
 }

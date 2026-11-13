@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Administrador {
@@ -17,6 +18,7 @@ public class Administrador {
 	@Column(nullable = false, unique = true)
 	private String login;
 	
+	@Size(min = 6, message = "A senha deve ter ao menos 6 caracteres")
 	@Column(nullable = false)
 	private String senha;
 
