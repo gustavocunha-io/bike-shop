@@ -1,29 +1,39 @@
 package br.gasc.dao;
 
+import java.util.List;
 import java.util.Optional;
 
 import br.gasc.model.Cliente;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
-import jakarta.persistence.TypedQuery;
 
-public class ClienteDao {
-	private EntityManager entityManager;
-	
+public class ClienteDao extends DAO<Cliente> {
 	public ClienteDao() {
-		this.entityManager = new JPAUtil().getEntityManager();
+		super(Cliente.class);
 	}
 
 	public Optional<Cliente> buscarPorCpf(String cpf) {
+		EntityManager entityManager = new JPAUtil().getEntityManager();
+		
 		try {
-			TypedQuery<Cliente> query = entityManager.createQuery("SELECT c FROM Cliente c WHERE c.cpf = :cpf", Cliente.class);
-			query.setParameter("cpf", cpf);
-			return Optional.of(query.getSingleResult());
-		} catch (NoResultException noResultException) {
-			return Optional.empty();
+			return entityManager.createQuery("SELECT c FROM Cliente c WHERE c.cpf = :cpf", Cliente.class)
+					.setParameter("cpf", cpf)
+					.getResultStream()
+					.findFirst();
 		} finally {
 			if(entityManager != null && entityManager.isOpen())
 				entityManager.close();
 		}
 	}
+	
+	public List<Cliente> listar() {
+		EntityManager entityManager = new JPAUtil().getEntityManager();
+		
+		try {
+			return entityManager.createQuery("SELECT c FROM Cliente c", Cliente.class).getResultList();
+		} finally {
+			if(entityManager != null && entityManager.isOpen())
+				entityManager.close();
+		}
+	}
+	
 }

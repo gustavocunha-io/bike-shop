@@ -37,7 +37,8 @@ public class DAO<T> implements CRUD<T> {
 		EntityManager entityManager = new JPAUtil().getEntityManager();
 		
 		entityManager.getTransaction().begin();
-		entityManager.remove(t);
+		T entity = entityManager.merge(t);
+		entityManager.remove(entity);
 		entityManager.getTransaction().commit();
 		entityManager.close();
 	}

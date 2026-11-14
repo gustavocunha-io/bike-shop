@@ -1,5 +1,6 @@
 package br.gasc.model;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class Cliente {
 	private String email;
 	
 	@Column(nullable = false)
-	private LocalDate dataNascimento;
+	private Date dataNascimento;
 	
 	/** Defini mappedBy para que o hibernate saiba que a tabela {@link Cliente} não guarda informações físicas sobre as bicicletas*/
 	@OneToMany(mappedBy = "proprietario", cascade = CascadeType.ALL)
@@ -67,11 +68,11 @@ public class Cliente {
 		this.email = email;
 	}
 	
-	public LocalDate getDataNascimento() {
+	public Date getDataNascimento() {
 		return dataNascimento;
 	}
 
-	public void setDataNascimento(LocalDate dataNascimento) {
+	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 	

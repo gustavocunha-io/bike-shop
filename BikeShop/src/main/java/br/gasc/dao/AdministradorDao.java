@@ -3,7 +3,6 @@ package br.gasc.dao;
 import java.util.Optional;
 
 import br.gasc.model.Administrador;
-import br.gasc.utils.HashSenhaUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
