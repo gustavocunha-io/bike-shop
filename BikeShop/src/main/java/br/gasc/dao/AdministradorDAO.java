@@ -8,11 +8,11 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 
 
-public class AdministradorDao {
+public class AdministradorDAO {
 	private EntityManager entityManager;
 	
 	
-	public AdministradorDao() {
+	public AdministradorDAO() {
 		this.entityManager = new JPAUtil().getEntityManager();
 	}
 	

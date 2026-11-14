@@ -1,10 +1,14 @@
 package br.gasc.service;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.Year;
+import java.time.ZoneId;
 import java.util.List; 
 
 import org.springframework.stereotype.Service;
 
-import br.gasc.dao.ClienteDao;
+import br.gasc.dao.ClienteDAO;
 import br.gasc.exception.RegraNegocioException;
 import br.gasc.model.Cliente;
 
@@ -12,21 +16,24 @@ import static br.gasc.constantes.Constantes.*;
 
 @Service
 public class ClienteService {
-	private ClienteDao clienteDao;
+	private ClienteDAO clienteDao;
 	
 	public ClienteService() {
-		this.clienteDao = new ClienteDao();
+		this.clienteDao = new ClienteDAO();
 	}
 
 	/**
 	 * Realiza a inserção de um novo cliente no banco validando se o cpf do mesmo já se encontra cadastrado.
 	 * 
 	 * @param cliente pessoa ao qual solicitou um serviço a loja
-	 * @return 
 	 */
+	@SuppressWarnings("deprecation")
 	public void cadastrarCliente(Cliente cliente) {
 		if(cliente == null)
 			throw new RegraNegocioException(MSG_ERRO_CLIENTE_NULO);
+		
+		if(cliente.getDataNascimento().getYear() >= LocalDate.now().getYear())
+			throw new RegraNegocioException(MSG_ERRO_DATA_NASCIMENTO_INVALIDA);
 		
 		if(validarCpf(cliente.getCpf()))
 			throw new RegraNegocioException(MSG_ERRO_CPF_DUPLICADO);
@@ -44,6 +51,12 @@ public class ClienteService {
 		return clienteDao.buscarPorCpf(cpf).isPresent();
 	}
 	
+	
+	/**
+	 * Lista todos os clientes que estão cadastrados no sistema 
+	 * 
+	 * @return retorna uma lista de clientes ou nulo se não existir nenhum.
+	 */
 	public List<Cliente> listarClientes() {
 		return clienteDao.listar();
 	}

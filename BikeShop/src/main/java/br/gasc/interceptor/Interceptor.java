@@ -17,7 +17,7 @@ public class Interceptor implements HandlerInterceptor {
 		if(request.getSession().getAttribute("adminLogado") != null)
 			return true;
 		
-		response.sendRedirect("loginAdmin");
+		response.sendRedirect(String.format("%s/loginAdmin", request.getContextPath()));
 		
 		return false;
 	}

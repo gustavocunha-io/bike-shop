@@ -1,7 +1,6 @@
 package br.gasc.model;
 
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -31,6 +30,9 @@ public class Cliente {
 	
 	@Column(nullable = false)
 	private Date dataNascimento;
+	
+	@Column(nullable =  true, length = 11)
+	private String contato;
 	
 	/** Defini mappedBy para que o hibernate saiba que a tabela {@link Cliente} não guarda informações físicas sobre as bicicletas*/
 	@OneToMany(mappedBy = "proprietario", cascade = CascadeType.ALL)
@@ -74,6 +76,14 @@ public class Cliente {
 
 	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
+	}
+	
+	public String getContato() {
+		return contato;
+	}
+
+	public void setContato(String contato) {
+		this.contato = contato;
 	}
 	
 }

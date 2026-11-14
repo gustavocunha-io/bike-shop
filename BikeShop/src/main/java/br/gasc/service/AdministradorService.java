@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import br.gasc.dao.AdministradorDao;
+import br.gasc.dao.AdministradorDAO;
 import br.gasc.model.Administrador;
 import br.gasc.utils.HashSenhaUtil;
 
@@ -15,7 +15,7 @@ public class AdministradorService {
 		if(administrador == null || administrador.getLogin() == null)
 			return false;
 		
-		AdministradorDao administradorDao = new AdministradorDao();
+		AdministradorDAO administradorDao = new AdministradorDAO();
 		Optional<Administrador> administradorBancoOpt = administradorDao.buscarPorLogin(administrador.getLogin());
 		
 		if(administradorBancoOpt.isPresent())

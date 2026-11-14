@@ -6,8 +6,8 @@ import java.util.Optional;
 import br.gasc.model.Cliente;
 import jakarta.persistence.EntityManager;
 
-public class ClienteDao extends DAO<Cliente> {
-	public ClienteDao() {
+public class ClienteDAO extends DAO<Cliente> {
+	public ClienteDAO() {
 		super(Cliente.class);
 	}
 

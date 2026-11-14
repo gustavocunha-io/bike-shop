@@ -143,6 +143,10 @@
 			<input id="email" name="email" type="email" value="${ cliente.email }" required="required">
 		</div>
 		<div class="campo">
+			<label for="contato">Contato</label>
+			<input id="contato" name="contato" type="number" value="${ cliente.contato }">
+		</div>
+		<div class="campo">
 			<label for="data-nascimento">Data de Nascimento:</label>
 			<input id="data-nascimento" name="dataNascimento" type="date" value="${ cliente.dataNascimento }">
 		</div>
@@ -151,5 +155,6 @@
 			<a href="${pageContext.request.contextPath}/cliente/listarClientes" class="btn-voltar">Voltar</a>
 		</div>
 	</form>
+	
 </body>
 </html>
