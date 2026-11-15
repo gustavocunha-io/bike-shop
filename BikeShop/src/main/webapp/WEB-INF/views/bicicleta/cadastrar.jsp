@@ -135,26 +135,28 @@
 			<input id="marca" name="marca" type="text" value="${ bicicleta.marca }" autocomplete="off" required="required">	
 		</div>
 		<div class="campo">
-			<label for="modelo">modelo:</label>
+			<label for="modelo">Modelo:</label>
 			<input id="modelo" name="modelo" type="text" value="${ bicicleta.modelo }" autocomplete="off" required="required">
 		</div>
 		<div class="campo">
-			<label for="
-
-">Email:</label>
-			<input id="email" name="email" type="email" value="${ cliente.email }" required="required">
+			<select name="tipoBicicleta.id">
+				<option>Tipo Bicicleta</option>
+				<c:forEach var="tipoBicicleta" items="${ tipoBicicletasList }">				
+					<option value="${ tipoBicicleta.id }">${ tipoBicicleta.nome }</option>
+				</c:forEach>
+			</select>
 		</div>
 		<div class="campo">
-			<label for="contato">Contato</label>
-			<input id="contato" name="contato" type="number" value="${ cliente.contato }">
+			<label for="tamanho-quadro">Tamanho Quadro:</label>
+			<input id="tamanho-quadro" name="tamanhoQuadro" type="number" value="${ bicicleta.email }" required="required">
 		</div>
 		<div class="campo">
-			<label for="data-nascimento">Data de Nascimento:</label>
-			<input id="data-nascimento" name="dataNascimento" type="date" value="${ cliente.dataNascimento }">
+			<label for="cpf-proprietario">CPF do Proprietário:</label>
+			<input id="cpf-proprietario" name="cpfProprietario" type="text">
 		</div>
 		<div class="acoes">
 			<input type="submit" value="Salvar">
-			<a href="${pageContext.request.contextPath}/cliente/listarClientes" class="btn-voltar">Voltar</a>
+			<a href="${ pageContext.request.contextPath }/bicicleta/listarBicicletas" class="btn-voltar">Voltar</a>
 		</div>
 	</form>
 	

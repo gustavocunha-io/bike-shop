@@ -78,6 +78,7 @@
 		<div class="marca-oficina">GASC <span>Bike Shop</span></div>
 		<span><a href="${pageContext.request.contextPath}/paginaInicial">Início</a></span>
 		<span><a href="${pageContext.request.contextPath}/cliente/listarClientes">Clientes</a></span>
+		<span><a href="${pageContext.request.contextPath}/bicicleta/listarBicicletas">Bicicletas</a></span>
 		<span><a href="${pageContext.request.contextPath}/logoutAdmin">Sair</a></span>
 	</nav>
 </div>

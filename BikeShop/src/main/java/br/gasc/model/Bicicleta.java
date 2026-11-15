@@ -22,7 +22,7 @@ public class Bicicleta {
 	private String marca;
 	
 	@Column(nullable = false)
-	private String model;
+	private String modelo;
 	
 	// Não deve ser possível que o cliente cadastre uma bicicleta sem o seu tipo.
 	@ManyToOne
@@ -33,13 +33,14 @@ public class Bicicleta {
 	private Integer tamanhoQuadro;
 	
 	// Optei por String pois podem haver números de série contendo letras ou até zeros no início.
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private String numeroSerie;
-	
-	@Column(nullable = false)
+
+	@Column(nullable = true)
 	private Year anoFabricacao;
 	
 	@ManyToOne
+	@JoinColumn(nullable = true)
 	private Cliente proprietario;
 
 	public Long getId() {
@@ -58,12 +59,12 @@ public class Bicicleta {
 		this.marca = marca;
 	}
 
-	public String getModel() {
-		return model;
+	public String getModelo() {
+		return modelo;
 	}
 
-	public void setModel(String model) {
-		this.model = model;
+	public void setModelo(String modelo) {
+		this.modelo = modelo;
 	}
 
 	public TipoBicicleta getTipoBicicleta() {

@@ -19,7 +19,7 @@ public class BicicletaService {
 		if(bicicleta == null)
 			throw new RegraNegocioException(null);
 		
-		if(bicicleta.getAnoFabricacao().getValue() >= Year.now().getValue())
+		if(bicicleta.getAnoFabricacao() != null && bicicleta.getAnoFabricacao().getValue() >= Year.now().getValue())
 			throw new RegraNegocioException(null);
 
 		bicicletaDAO.inserir(bicicleta);

@@ -1,9 +1,6 @@
 package br.gasc.service;
 
-import java.sql.Date;
 import java.time.LocalDate;
-import java.time.Year;
-import java.time.ZoneId;
 import java.util.List; 
 
 import org.springframework.stereotype.Service;
@@ -39,6 +36,12 @@ public class ClienteService {
 			throw new RegraNegocioException(MSG_ERRO_CPF_DUPLICADO);
 		
 		clienteDao.inserir(cliente);
+	}
+	
+	public Cliente pesquisarPorCpf(String cpf) {
+		if(cpf == null || cpf.isBlank())
+			throw new RegraNegocioException("okclkd");
+		return clienteDao.buscarPorCpf(cpf).get();
 	}
 	
 	/**
