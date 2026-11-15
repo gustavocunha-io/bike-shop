@@ -68,8 +68,8 @@
 		}
 
 		input[type="text"],
-		input[type="email"],
-		input[type="date"] {
+		input[type="number"],
+		select {
 			width: 100%;
 			padding: 10px 12px;
 			border: 1px solid #d4d4d8;
@@ -80,8 +80,8 @@
 		}
 
 		input[type="text"]:focus,
-		input[type="email"]:focus,
-		input[type="date"]:focus {
+		input[type="number"]:focus,
+		select:focus {
 			outline: none;
 			border-color: #f97316;
 			box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.18);
@@ -131,16 +131,17 @@
 		</c:if>
 
 		<div class="campo">
-			<label for="marca">Marca:</label>
+			<label for="marca">Marca*</label>
 			<input id="marca" name="marca" type="text" value="${ bicicleta.marca }" autocomplete="off" required="required">	
 		</div>
 		<div class="campo">
-			<label for="modelo">Modelo:</label>
+			<label for="modelo">Modelo*</label>
 			<input id="modelo" name="modelo" type="text" value="${ bicicleta.modelo }" autocomplete="off" required="required">
 		</div>
 		<div class="campo">
+			<label>Tipo Bicicleta</label>
 			<select name="tipoBicicleta.id">
-				<option>Tipo Bicicleta</option>
+				<option selected="selected">selecionar</option>
 				<c:forEach var="tipoBicicleta" items="${ tipoBicicletasList }">				
 					<option value="${ tipoBicicleta.id }">${ tipoBicicleta.nome }</option>
 				</c:forEach>

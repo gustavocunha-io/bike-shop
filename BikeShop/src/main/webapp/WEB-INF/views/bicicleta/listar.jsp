@@ -154,7 +154,7 @@
 									<td>${ bicicleta.tamanhoQuadro }</td>
 									<td>${ bicicleta.numeroSerie }</td>
 									<td>${ bicicleta.anoFabricacao }</td>
-									<td>${ bicicleta.proprietario.nome }</td>
+									<td>${ bicicleta.proprietario.cpf }</td>
 								</tr>
 							</c:forEach>
 						</tbody>
