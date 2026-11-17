@@ -1,6 +1,8 @@
 package br.gasc.model;
 
 import java.time.Year;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 
 @Entity
@@ -42,6 +45,9 @@ public class Bicicleta {
 	@ManyToOne
 	@JoinColumn(nullable = true)
 	private Cliente proprietario;
+	
+	@OneToMany(mappedBy = "bicicleta")
+	private List<OrdemServico> ordensServicosList = new ArrayList<OrdemServico>();
 
 	public Long getId() {
 		return id;

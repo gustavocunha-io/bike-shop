@@ -137,6 +137,7 @@
 								<th>Nome</th>
 								<th>CPF</th>
 								<th>Email</th>
+								<th>Contato</th>
 								<th>Data de Nascimento</th>
 							</tr>
 						</thead>
@@ -147,6 +148,7 @@
 									<td>${ cliente.nome }</td>
 									<td>${ cliente.cpf }</td>
 									<td>${ cliente.email }</td>
+									<td>${ cliente.contato }</td>
 									<td><fmt:formatDate value="${ cliente.dataNascimento }" pattern="dd/MM/yyyy"/></td>
 								</tr>
 							</c:forEach>

@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 
@@ -37,6 +38,9 @@ public class Cliente {
 	/** Defini mappedBy para que o hibernate saiba que a tabela {@link Cliente} não guarda informações físicas sobre as bicicletas*/
 	@OneToMany(mappedBy = "proprietario", cascade = CascadeType.ALL)
 	private List<Bicicleta> bicicletasList;
+	
+	@OneToMany(mappedBy = "cliente")
+	private List<OrdemServico> ordensServicosList;
 
 	public Long getId() {
 		return id;

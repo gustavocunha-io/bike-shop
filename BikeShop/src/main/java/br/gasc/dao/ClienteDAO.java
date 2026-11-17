@@ -25,15 +25,4 @@ public class ClienteDAO extends DAO<Cliente> {
 		}
 	}
 	
-	public List<Cliente> listar() {
-		EntityManager entityManager = new JPAUtil().getEntityManager();
-		
-		try {
-			return entityManager.createQuery("SELECT c FROM Cliente c", Cliente.class).getResultList();
-		} finally {
-			if(entityManager != null && entityManager.isOpen())
-				entityManager.close();
-		}
-	}
-	
 }
