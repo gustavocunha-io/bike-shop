@@ -17,8 +17,11 @@
 	<mvc:default-servlet-handler /> <!-- Necessário para usar recursos estáticos a partir do padrão MVC. Ex: js, css -->
 	
 	<mvc:interceptors>
-		<bean class="br.gasc.interceptor.Interceptor"/>
-	</mvc:interceptors>	
+    	<mvc:interceptor>
+        	<mvc:mapping path="/**" />
+        	<bean class="br.gasc.interceptor.Interceptor" />
+    	</mvc:interceptor>
+	</mvc:interceptors>
 	
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/views/" />

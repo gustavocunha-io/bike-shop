@@ -41,7 +41,7 @@ public class AdministradorController {
 		return "pagina-inicial";
 	}
 	
-	@RequestMapping(value = "efetuaLogin", method = RequestMethod.POST)
+	@RequestMapping(value = "efetuaLogin", method = {RequestMethod.GET, RequestMethod.POST})
 	public String efetuaLogin(Administrador administrador, HttpSession session, Model model) {
 		AdministradorService administradorService = new AdministradorService();
 		

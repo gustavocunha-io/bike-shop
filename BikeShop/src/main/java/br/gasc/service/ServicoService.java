@@ -31,6 +31,10 @@ public class ServicoService {
 		servicoDAO.inserir(servico);
 	}
 	
+	public Servico pesquisarServicoId(Long id) {
+		return servicoDAO.pesquisar(id);
+	}
+	
 	public List<Servico> listarServicos() {
 		return servicoDAO.listar();
 	}

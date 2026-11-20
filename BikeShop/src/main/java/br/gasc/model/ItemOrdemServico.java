@@ -52,5 +52,13 @@ public class ItemOrdemServico {
 	public void setServico(Servico servico) {
 		this.servico = servico;
 	}
-		
+
+	public BigDecimal getValor() {
+		return valor;
+	}
+
+	public void setValor(BigDecimal valor) {
+		this.valor = valor;
+	}
+	
 }

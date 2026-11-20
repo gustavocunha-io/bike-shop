@@ -80,6 +80,7 @@
 		<span><a href="${pageContext.request.contextPath}/cliente/listarClientes">Clientes</a></span>
 		<span><a href="${pageContext.request.contextPath}/bicicleta/listarBicicletas">Bicicletas</a></span>
 		<span><a href="${pageContext.request.contextPath}/servico/listarServicos">Serviços</a></span>
+		<span><a href="${pageContext.request.contextPath}/ordemServico/pesquisarCliente">Ordens de Serviço</a></span>
 		<span><a href="${pageContext.request.contextPath}/logoutAdmin">Sair</a></span>
 	</nav>
 </div>

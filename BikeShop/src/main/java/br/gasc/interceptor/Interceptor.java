@@ -21,7 +21,5 @@ public class Interceptor implements HandlerInterceptor {
 		
 		return false;
 	}
-
-	
 	
 }

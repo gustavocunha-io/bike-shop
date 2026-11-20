@@ -28,6 +28,9 @@ public final class Constantes {
 	// Mensagens de sucesso servico.
 	public static final String MSG_SUCESSO_CADASTRO_SERVICO = "Sucesso: o serviço foi cadastrado no sistema!";
 	
+	// Mensagem de sucesso ordem servico.
+	public static final String MSG_SUCESSO_CADASTRAR_ORDEM_SERVICO = "Sucesso: a ordem de servico foi cadastrada no sistema!";
+	
 	private Constantes() {}
 
 }
