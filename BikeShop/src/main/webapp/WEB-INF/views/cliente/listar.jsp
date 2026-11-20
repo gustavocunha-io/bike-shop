@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ page import="br.gasc.utils.DataUtil" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -133,7 +134,6 @@
 					<table>
 						<thead>
 							<tr>
-								<th>ID</th>
 								<th>Nome</th>
 								<th>CPF</th>
 								<th>Email</th>
@@ -144,12 +144,11 @@
 						<tbody>
 							<c:forEach var="cliente" items="${ clientesList }">
 								<tr>
-									<td>${ cliente.id }</td>
 									<td>${ cliente.nome }</td>
 									<td>${ cliente.cpf }</td>
 									<td>${ cliente.email }</td>
 									<td>${ cliente.contato }</td>
-									<td><fmt:formatDate value="${ cliente.dataNascimento }" pattern="dd/MM/yyyy"/></td>
+									<td>${ DataUtil.dataFormatada(cliente.dataNascimento) }</td>
 								</tr>
 							</c:forEach>
 						</tbody>

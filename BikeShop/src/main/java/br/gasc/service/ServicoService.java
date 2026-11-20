@@ -31,6 +31,13 @@ public class ServicoService {
 		servicoDAO.inserir(servico);
 	}
 	
+	public void alterarServico(Servico servico) {
+		if(servico == null)
+			throw new RegraNegocioException(MSG_ERRO_SERVICO_NULO);
+		
+		servicoDAO.alterar(servico);
+	}
+	
 	public Servico pesquisarServicoId(Long id) {
 		return servicoDAO.pesquisar(id);
 	}

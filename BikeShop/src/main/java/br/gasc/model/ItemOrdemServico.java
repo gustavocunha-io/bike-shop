@@ -11,7 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 
-@Entity
+@Entity(name = "item_ordem_servico")
 public class ItemOrdemServico {
 	@Id
 	@SequenceGenerator(name = "id_item_ordem_servico", sequenceName = "seq_item_ordem_servico", allocationSize = 1)
@@ -27,7 +27,7 @@ public class ItemOrdemServico {
 	private Servico servico;
 	
 	@Column(precision = 10, scale = 2)
-	private BigDecimal valor;
+	private BigDecimal valorUnitario;
 
 	public Long getId() {
 		return id;
@@ -53,12 +53,12 @@ public class ItemOrdemServico {
 		this.servico = servico;
 	}
 
-	public BigDecimal getValor() {
-		return valor;
+	public BigDecimal getValorUnitario() {
+		return valorUnitario;
 	}
 
-	public void setValor(BigDecimal valor) {
-		this.valor = valor;
+	public void setValorUnitario(BigDecimal valorUnitario) {
+		this.valorUnitario = valorUnitario;
 	}
-	
+
 }

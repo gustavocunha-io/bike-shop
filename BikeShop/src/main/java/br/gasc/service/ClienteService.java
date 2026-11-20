@@ -20,22 +20,35 @@ public class ClienteService {
 	}
 
 	/**
-	 * Realiza a inserção de um novo cliente no banco validando se o cpf do mesmo já se encontra cadastrado.
+	 * Realiza a inserção de um novo cliente no banco validando a data de nascimento e se o cpf do mesmo
+	 * já se encontra cadastrado.
 	 * 
 	 * @param cliente pessoa ao qual solicitou um serviço a loja
 	 */
-	@SuppressWarnings("deprecation")
 	public void cadastrarCliente(Cliente cliente) {
 		if(cliente == null)
 			throw new RegraNegocioException(MSG_ERRO_CLIENTE_NULO);
 		
-		if(cliente.getDataNascimento().getYear() >= LocalDate.now().getYear())
-			throw new RegraNegocioException(MSG_ERRO_DATA_NASCIMENTO_INVALIDA);
+		if(cliente.getCpf() == null)
+			throw new RegraNegocioException(MSG_ERRO_CPF_NULO);
+		
+		if(cliente.getCpf().length() != 11)
+			throw new RegraNegocioException(MSG_ERRO_CPF_DIFERENTE_DE_11);
+		
+		if(cliente.getDataNascimento() == null)
+			throw new RegraNegocioException(MSG_ERRO_DATA_NASCIMENTO_NULA);
+		
+		if(cliente.getDataNascimento().isAfter(LocalDate.now()))
+			throw new RegraNegocioException(MSG_ERRO_DATA_NASCIMENTO_FUTURA);
 		
 		if(validarCpf(cliente.getCpf()))
 			throw new RegraNegocioException(MSG_ERRO_CPF_DUPLICADO);
 		
 		clienteDao.inserir(cliente);
+	}
+	
+	public Cliente pesquisarPorId(Long id) {
+		return clienteDao.pesquisar(id);
 	}
 	
 	public Cliente pesquisarPorCpf(String cpf) {

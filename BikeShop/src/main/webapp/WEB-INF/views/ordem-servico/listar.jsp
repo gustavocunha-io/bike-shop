@@ -106,13 +106,14 @@
 			background-color: #fafafa;
 		}
 	</style>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-4.1.0.js"></script>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/cabecalho.jsp" %>
 <div class="conteudo-principal">
 		<div class="topo-pagina">
-			<h1>Clientes Cadastrados</h1>
-			<a href="${pageContext.request.contextPath}/cliente/cadastrarCliente" class="btn-novo">+ Nova Ordem de Serviço</a>
+			<h1>Ordens de Serviços Cadastradas</h1>
+			<a href="${pageContext.request.contextPath}/ordemServico/cadastrarOrdemServico" class="btn-novo">+ Nova Ordem de Serviço</a>
 		</div>
 
 		<c:if test="${ not empty sucesso }">
@@ -132,21 +133,23 @@
 					<table>
 						<thead>
 							<tr>
-								<th>ID</th>
 								<th>Cliente</th>
 								<th>Bicicleta</th>
 								<th>Data Agendamento</th>
+								<th>Valor a Pagar</th>
 								<th>Status</th>
+								<th>Ações</th>
 							</tr>
 						</thead>
 						<tbody>
 							<c:forEach var="ordemServico" items="${ ordensServicosList }">
-								<tr>
-									<td>${ ordemServico.id }</td>
+								<tr id="ordem_${ ordemServico.id }">
+									<td><fmt:formatDate value="${ ordemServico.dataAgendamento }" pattern="dd/MM/yyyy"/></td>
 									<td>${ ordemServico.cliente.nome }</td>
 									<td>${ ordemServico.bicicleta.marca }</td>
-									<td><fmt:formatDate value="${ ordemServico.dataAgendamento }" pattern="dd/MM/yyyy"/></td>
-									<td>${ ordemServico.status.descricao }</td>
+									<td><fmt:formatNumber value="${ ordemServico.valorFinal }" type="currency"></fmt:formatNumber></td>
+									<td id="status_${ ordemServico.id }" >${ ordemServico.status.descricao }</td>
+									<td id="acao_${ ordemServico.id }"><a href="#" onclick="cancelarOrdemServico(${ ordemServico.id }); return false;">Cancelar?</a></td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -154,6 +157,18 @@
 				</div>
 			</c:otherwise>
 		</c:choose>
-	</div>>
+	</div>
+	<script type="text/javascript">
+		function cancelarOrdemServico(id) {
+			if (confirm("Deseja realmente cancelar esta ordem de serviço?")) {
+				$.post("${pageContext.request.contextPath}/ordemServico/cancelarOrdemServicoAjax", { 'id': id }, function () {
+					$("#status_" + id).text("Cancelada");
+					$("#acao_" + id).empty();
+				}).fail(function () {
+					alert("Não foi possível cancelar a ordem de serviço.");
+				});
+			}
+		}
+	</script>
 </body>
 </html>

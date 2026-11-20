@@ -5,8 +5,11 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import br.gasc.dao.OrdemServicoDAO;
+import br.gasc.enums.StatusOrdemServico;
 import br.gasc.exception.RegraNegocioException;
 import br.gasc.model.OrdemServico;
+
+import static br.gasc.constantes.Constantes.*;
 
 @Service
 public class OrdemServicoService {
@@ -16,14 +19,31 @@ public class OrdemServicoService {
 		this.ordemServicoDAO = new OrdemServicoDAO();
 	}
 	
+	public OrdemServico pesquisarPorId(Long id) {
+		if(id == null)
+			throw new RegraNegocioException(MSG_ERRO_ORDEM_SERVICO_NULA);
+		
+		return ordemServicoDAO.pesquisar(id);
+	}
+	
 	public void cadastrarOrdemServico(OrdemServico ordemServico) {
 		if(ordemServico == null)
-			throw new RegraNegocioException(null);
+			throw new RegraNegocioException(MSG_ERRO_ORDEM_SERVICO_NULA);
+		
+		if(ordemServico.getServicosList().size() < 1)
+			throw new RegraNegocioException(MSG_ERRO_SERVICO_MENOR_QUE_1);
 		
 		ordemServicoDAO.alterar(ordemServico);
 	}
 	
-	public List<OrdemServico> listarOrdemServico() {
-		return ordemServicoDAO.listar();
+	public void alterarOrdemServico(OrdemServico ordemServico) { 
+		if(ordemServico == null)
+			throw new RegraNegocioException(MSG_ERRO_ORDEM_SERVICO_NULA);
+		
+		ordemServicoDAO.alterar(ordemServico);
+	}
+	
+	public List<OrdemServico> listarOrdemServicoPorStatus(StatusOrdemServico statusOrdemServico) {
+		return ordemServicoDAO.listarPorStatus(statusOrdemServico);
 	}
 }

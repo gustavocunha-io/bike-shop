@@ -199,16 +199,38 @@
 			<label>Serviços oferecidos</label>
 			<c:forEach var="servico" items="${ servicosList }">
 				<label class="item-checkbox">
-					<input id="servico.${ servico.id }" name="servicosIDs" value="${ servico.id }" type="checkbox">
+					<input id="servico.${ servico.id }" class="servicosIDs" name="servicosIDs" value="${ servico.id }" type="checkbox" onchange="verificarDesconto()">
 					<span>${ servico.tipo } (R$ ${ servico.valor })</span>
 				</label>
 			</c:forEach>
 		</div>
+		
+	    <div id="areaDesconto" style="display: none; justify-content: center; align-items: center;">
+	        <label style="display: flex; align-items: center; gap: 6px;">
+	            Aplicar desconto de 10% <input type="checkbox" id="checarDesconto" name="aplicarDesconto" value="true" /> 
+	        </label>
+	    </div>
 
 		<div class="acoes" style="margin-top: 24px;">
 			<input type="submit" value="Salvar">
 			<a href="${pageContext.request.contextPath}/ordemServico/listarOrdemServico" class="btn-voltar">Voltar</a>
 		</div>
 	</form>
+	<script type="text/javascript">
+		function verificarDesconto() {
+			var quantidadeServicos = $(".servicosIDs:checked").length;
+			
+			if(quantidadeServicos >= 3)
+				$("#areaDesconto").show();
+			else {
+				$("#areaDesconto").hide();
+				$("#checarDesconto").prop("checked", false);
+			}
+		}
+		
+		$(document).ready(function() {
+			alert("jQuery está funcionando!");
+		});
+	</script>
 </body>
 </html>

@@ -1,7 +1,10 @@
 package br.gasc.model;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -28,8 +31,9 @@ public class Cliente {
 	@Column(unique = true, nullable = false, length = 254)
 	private String email;
 	
+	@DateTimeFormat(iso = ISO.DATE)
 	@Column(nullable = false)
-	private Date dataNascimento;
+	private LocalDate dataNascimento;
 	
 	@Column(nullable =  true, length = 11)
 	private String contato;
@@ -50,7 +54,7 @@ public class Cliente {
 	}
 
 	public String getCpf() {
-		return cpf.replaceAll("(\\d{3})(\\d{3})(\\d{3})(\\d{2})", "$1.$2.$3-$4");
+		return cpf;
 	}
 
 	public void setCpf(String cpf) {
@@ -73,14 +77,30 @@ public class Cliente {
 		this.email = email;
 	}
 	
-	public Date getDataNascimento() {
+	public LocalDate getDataNascimento() {
 		return dataNascimento;
 	}
 
-	public void setDataNascimento(Date dataNascimento) {
+	public void setDataNascimento(LocalDate dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
-	
+
+	public List<Bicicleta> getBicicletasList() {
+		return bicicletasList;
+	}
+
+	public void setBicicletasList(List<Bicicleta> bicicletasList) {
+		this.bicicletasList = bicicletasList;
+	}
+
+	public List<OrdemServico> getOrdensServicosList() {
+		return ordensServicosList;
+	}
+
+	public void setOrdensServicosList(List<OrdemServico> ordensServicosList) {
+		this.ordensServicosList = ordensServicosList;
+	}
+
 	public String getContato() {
 		return contato;
 	}

@@ -7,7 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 
-@Entity
+@Entity(name = "tipo_bicicleta")
 public class TipoBicicleta {
 	@Id
 	@SequenceGenerator(name = "id_tipo_bicicleta", sequenceName = "seq_tipo_bicicleta", allocationSize = 1)

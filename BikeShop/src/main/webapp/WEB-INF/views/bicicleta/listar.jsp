@@ -134,7 +134,6 @@
 					<table>
 						<thead>
 							<tr>
-								<th>ID</th>
 								<th>Marca</th>
 								<th>Modelo</th>
 								<th>Tipo Bicicleta</th>
@@ -147,7 +146,6 @@
 						<tbody>
 							<c:forEach var="bicicleta" items="${ bicicletasList }">
 								<tr>
-									<td>${ bicicleta.id }</td>
 									<td>${ bicicleta.marca }</td>
 									<td>${ bicicleta.modelo }</td>
 									<td>${ bicicleta.tipoBicicleta.nome }</td>

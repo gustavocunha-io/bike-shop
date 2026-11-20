@@ -18,9 +18,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.SequenceGenerator;
-import jakarta.validation.constraints.Pattern;
 
-@Entity
+@Entity(name = "ordem_servico")
 public class OrdemServico {
 	@Id
 	@SequenceGenerator(name = "id_ordem_servico", sequenceName = "seq_ordem_servico", allocationSize = 1)
@@ -29,6 +28,15 @@ public class OrdemServico {
 	
 	@Column(nullable = false)
 	private Date dataAgendamento;
+	
+	@Column(nullable = true)
+	private Date dataExecucao;
+	
+	@Column(nullable = false, precision = 10, scale = 2)
+	private BigDecimal valorBruto;
+	
+	@Column(nullable = false, precision = 10, scale = 2)
+	private BigDecimal valorFinal;
 	
 	/** Defini que sempre ao criar uma ordem de serviço ela já vem com status {@code AGENDADA}*/
 	@Enumerated(EnumType.STRING)
@@ -45,9 +53,6 @@ public class OrdemServico {
 	
 	@OneToMany(mappedBy = "ordemServico", cascade = CascadeType.ALL)
 	private List<ItemOrdemServico> servicosList = new ArrayList<ItemOrdemServico>();
-	
-	@Column(nullable = false, precision = 10, scale = 2)
-	private BigDecimal valorTotal = BigDecimal.ZERO;
 
 	public Long getId() {
 		return id;
@@ -65,6 +70,30 @@ public class OrdemServico {
 		this.dataAgendamento = dataAgendamento;
 	}
 	
+	public Date getDataExecucao() {
+		return dataExecucao;
+	}
+
+	public void setDataExecucao(Date dataExecucao) {
+		this.dataExecucao = dataExecucao;
+	}
+
+	public BigDecimal getValorBruto() {
+		return valorBruto;
+	}
+
+	public void setValorBruto(BigDecimal valorBruto) {
+		this.valorBruto = valorBruto;
+	}
+
+	public BigDecimal getValorFinal() {
+		return valorFinal;
+	}
+
+	public void setValorFinal(BigDecimal valorFinal) {
+		this.valorFinal = valorFinal;
+	}
+
 	public StatusOrdemServico getStatus() {
 		return status;
 	}
@@ -95,14 +124,6 @@ public class OrdemServico {
 
 	public void setServicosList(List<ItemOrdemServico> servicosList) {
 		this.servicosList = servicosList;
-	}
-
-	public BigDecimal getValorTotal() {
-		return valorTotal;
-	}
-
-	public void setValorTotal(BigDecimal valorTotal) {
-		this.valorTotal = valorTotal;
 	}
 	
 }
