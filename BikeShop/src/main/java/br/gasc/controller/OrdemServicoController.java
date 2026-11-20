@@ -2,13 +2,17 @@ package br.gasc.controller;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -121,6 +125,7 @@ public class OrdemServicoController {
 		} catch (RegraNegocioException regraNegocioException) {
 			model.addAttribute("erro", regraNegocioException.getMessage());
 			redirectAttributes.addAttribute("idCliente", idCliente);
+			
 			return "redirect:/ordemServico/cadastrarOrdemServico";
 		}
 	}
@@ -143,6 +148,70 @@ public class OrdemServicoController {
 	public String listar(Model model) {
 		model.addAttribute("ordensServicosList", ordemServicoService.listarOrdemServicoPorStatus(StatusOrdemServico.AGENDADA));
 		return "ordem-servico/listar";
+	}
+	
+	@RequestMapping(value = "listarOrdensServicos", method = RequestMethod.POST)
+	public String listarOrdensServicos(
+	@RequestParam(value = "status", required = false, defaultValue = "AGENDADA") String statusFiltro,
+	@RequestParam(value = "dataInicio", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dataInicio,
+	@RequestParam(value = "dataExata", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dataExata,
+	Model model) {
+
+	    List<OrdemServico> lista = ordemServicoService.filtrarOrdemServico(statusFiltro, dataInicio, dataExata);
+	    
+	    model.addAttribute("ordensServicosList", lista);
+	    model.addAttribute("statusFiltro", statusFiltro);
+	    model.addAttribute("dataInicio", dataInicio);
+	    model.addAttribute("dataExata", dataExata);
+	    
+	    return "ordem-servico/listar";
+	}
+	
+	@RequestMapping(value = "historicoCliente", method = RequestMethod.POST)
+	public String historicoCliente(@RequestParam("id") Long idCliente, Model model) {
+		ClienteService clienteService = new ClienteService();
+		Cliente cliente = clienteService.pesquisarPorId(idCliente);
+
+		model.addAttribute("tituloHistorico", "Histórico de Serviços — Cliente: " + cliente.getNome());
+		model.addAttribute("tipoHistorico", "CLIENTE");
+		model.addAttribute("ordensServicosList", ordemServicoService.listarHistoricoPorCliente(idCliente));
+		
+		return "ordem-servico/historico";
+	}
+
+	@RequestMapping(value = "historicoBicicleta", method = RequestMethod.POST)
+	public String historicoBicicleta(@RequestParam("id") Long idBicicleta, Model model) {
+		BicicletaService bicicletaService = new BicicletaService();
+		Bicicleta bicicleta = bicicletaService.pesquisarPorId(idBicicleta);
+
+		model.addAttribute("tituloHistorico", "Histórico de Serviços — Bicicleta: " + bicicleta.getMarca() + " " + bicicleta.getModelo());
+		model.addAttribute("tipoHistorico", "BICICLETA");
+		model.addAttribute("ordensServicosList", ordemServicoService.listarHistoricoPorBicicleta(idBicicleta));
+		
+		return "ordem-servico/historico";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "detalhesAjax", method = RequestMethod.POST)
+	public Map<String, Object> detalhesAjax(@RequestParam("id") Long id) {
+		OrdemServico os = ordemServicoService.pesquisarPorId(id);
+
+		List<> itensJson = new ArrayList<>();
+		for (ItemOrdemServico item : os.getServicosList()) {
+			Map<String, Object> itemMap = new HashMap<>();
+			itemMap.put("nome", item.getServico().getTipo());
+			itemMap.put("valor", item.getValorUnitario());
+			itensJson.add(itemMap);
+		}
+
+		Map<String, Object> resposta = new HashMap<>();
+		resposta.put("cliente", os.getCliente() != null ? os.getCliente().getNome() : "Sem proprietário");
+		resposta.put("dataExecucao", os.getDataExecucao() != null ? os.getDataExecucao().toString() : "Não informada");
+		resposta.put("desconto", os.getValorDesconto() != null ? os.getValorDesconto() : BigDecimal.ZERO);
+		resposta.put("valorFinal", os.getValorFinal() != null ? os.getValorFinal() : BigDecimal.ZERO);
+		resposta.put("itens", itensJson);
+
+		return resposta;
 	}
 	
 	@RequestMapping(value = "buscarCliente")

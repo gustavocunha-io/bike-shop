@@ -6,137 +6,67 @@
 <head>
 <meta charset="UTF-8">
 <title>Lista de Ordens de Serviços</title>
-	<style>
-		body {
-			background-color: #f4f4f5;
-		}
-
-		.conteudo-principal {
-			padding: 32px;
-			max-width: 1100px;
-			margin: 0 auto;
-		}
-
-		.topo-pagina {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			margin-bottom: 24px;
-		}
-
-		.topo-pagina h1 {
-			color: #18181b;
-			font-size: 24px;
-			margin: 0;
-		}
-
-		.btn-novo {
-			background-color: #f97316;
-			color: #ffffff;
-			text-decoration: none;
-			font-size: 14px;
-			font-weight: 600;
-			padding: 10px 18px;
-			border-radius: 6px;
-			transition: background-color 0.2s;
-		}
-
-		.btn-novo:hover {
-			background-color: #ea580c;
-		}
-
-		.alerta-sucesso {
-			color: #166534;
-			background-color: #dcfce7;
-			border: 1px solid #86efac;
-			padding: 12px 16px;
-			border-radius: 6px;
-			margin-bottom: 20px;
-			font-size: 14px;
-			font-weight: 500;
-		}
-
-		.mensagem-vazia {
-			background-color: #ffffff;
-			padding: 32px;
-			text-align: center;
-			border-radius: 8px;
-			color: #52525b;
-			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-		}
-
-		.tabela-container {
-			background-color: #ffffff;
-			border-radius: 8px;
-			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-			overflow-x: auto; /* Evita quebrar o layout em telas menores */
-		}
-
-		table {
-			width: 100%;
-			border-collapse: collapse;
-			text-align: center;
-		}
-
-		thead {
-			background-color: #18181b;
-			color: #ffffff;
-		}
-
-		th {
-			padding: 14px 16px;
-			font-size: 13px;
-			font-weight: 600;
-			text-transform: uppercase;
-			letter-spacing: 0.5px;
-		}
-
-		td {
-			padding: 14px 16px;
-			font-size: 14px;
-			color: #27272a;
-			border-bottom: 1px solid #e4e4e7;
-		}
-
-		tbody tr:last-child td {
-			border-bottom: none;
-		}
-
-		tbody tr:hover {
-			background-color: #fafafa;
-		}
-	</style>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-4.1.0.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/ordem-servico.css">
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-4.1.0.js"></script>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/cabecalho.jsp" %>
-<div class="conteudo-principal">
+	<div class="conteudo-principal">
 		<div class="topo-pagina">
-			<h1>Ordens de Serviços Cadastradas</h1>
+			<h1>Ordens de Serviços</h1>
 			<a href="${pageContext.request.contextPath}/ordemServico/cadastrarOrdemServico" class="btn-novo">+ Nova Ordem de Serviço</a>
 		</div>
 
 		<c:if test="${ not empty sucesso }">
-			<div class="alerta-sucesso">
-				${ sucesso }
-			</div>
+			<div class="alerta-sucesso">${ sucesso }</div>
 		</c:if>
+		<c:if test="${ not empty erro }">
+			<div class="alerta-erro">${ erro }</div>
+		</c:if>
+
+		<!-- Filtros por Status e Data -->
+		<form action="${pageContext.request.contextPath}/ordemServico/listarOrdensServicos" method="post" class="barra-filtros">
+			<div class="campo-filtro">
+				<label for="status">Status:</label>
+				<select name="status" id="status">
+					<option value="AGENDADA" ${ statusFiltro == 'AGENDADA' ? 'selected' : '' }>Agendada</option>
+					<option value="EXECUTADA" ${ statusFiltro == 'EXECUTADA' ? 'selected' : '' }>Executada</option>
+					<option value="PAGA" ${ statusFiltro == 'PAGA' ? 'selected' : '' }>Paga</option>
+					<option value="CANCELADA" ${ statusFiltro == 'CANCELADA' ? 'selected' : '' }>Cancelada</option>
+					<option value="TODOS" ${ statusFiltro == 'TODOS' ? 'selected' : '' }>Todos os Status</option>
+				</select>
+			</div>
+
+			<div class="campo-filtro">
+				<label for="dataInicio">A partir da data:</label>
+				<input type="date" name="dataInicio" id="dataInicio" value="${ dataInicio }">
+			</div>
+
+			<div class="campo-filtro">
+				<label for="dataExata">Ou data específica:</label>
+				<input type="date" name="dataExata" id="dataExata" value="${ dataExata }">
+			</div>
+
+			<button type="submit" class="btn-primario">Filtrar</button>
+			<a href="${pageContext.request.contextPath}/ordemServico/listarOrdemServico" class="btn-secundario">Limpar</a>
+		</form>
 
 		<c:choose>
 			<c:when test="${ empty ordensServicosList }">
 				<div class="mensagem-vazia">
-					<p>Nenhuma ordem de serviço cadastrada até o momento!</p>
+					<p>Nenhuma ordem de serviço encontrada para os filtros selecionados!</p>
 				</div>
 			</c:when>
 			<c:otherwise>
 				<div class="tabela-container">
-					<table>
+					<table class="tabela-os">
 						<thead>
 							<tr>
+								<th>Data Agendamento</th>
 								<th>Cliente</th>
 								<th>Bicicleta</th>
-								<th>Data Agendamento</th>
-								<th>Valor a Pagar</th>
+								<th>Serviços Previstos</th>
+								<th>Valor</th>
 								<th>Status</th>
 								<th>Ações</th>
 							</tr>
@@ -144,12 +74,34 @@
 						<tbody>
 							<c:forEach var="ordemServico" items="${ ordensServicosList }">
 								<tr id="ordem_${ ordemServico.id }">
-									<td><fmt:formatDate value="${ ordemServico.dataAgendamento }" pattern="dd/MM/yyyy"/></td>
-									<td>${ ordemServico.cliente.nome }</td>
-									<td>${ ordemServico.bicicleta.marca }</td>
-									<td><fmt:formatNumber value="${ ordemServico.valorFinal }" type="currency"></fmt:formatNumber></td>
-									<td id="status_${ ordemServico.id }" >${ ordemServico.status.descricao }</td>
-									<td id="acao_${ ordemServico.id }"><a href="#" onclick="cancelarOrdemServico(${ ordemServico.id }); return false;">Cancelar?</a></td>
+									<td>${ ordemServico.dataAgendamento }</td>
+									<td>${ ordemServico.cliente != null ? ordemServico.cliente.nome : 'Sem proprietário' }</td>
+									<td>${ ordemServico.bicicleta.marca } ${ ordemServico.bicicleta.modelo }</td>
+									<td>
+										<c:forEach var="item" items="${ ordemServico.servicosList }" varStatus="loop">
+											${ item.servico.tipo }<c:if test="${ !loop.last }">, </c:if>
+										</c:forEach>
+									</td>
+									<td><fmt:formatNumber value="${ ordemServico.valorFinal }" type="currency"/></td>
+									<td id="status_${ ordemServico.id }">
+										<span class="badge-status status-${ ordemServico.status }">${ ordemServico.status.descricao }</span>
+									</td>
+									<td id="acao_${ ordemServico.id }">
+										<c:if test="${ ordemServico.status == 'AGENDADA' }">
+											<form action="${pageContext.request.contextPath}/ordemServico/executar" method="post" style="display:inline;">
+												<input type="hidden" name="id" value="${ ordemServico.id }">
+												<button type="submit" class="btn-sucesso">Executar</button>
+											</form>
+											<button type="button" class="btn-perigo" onclick="cancelarOrdemServico(${ ordemServico.id });">Cancelar</button>
+										</c:if>
+										<c:if test="${ ordemServico.status == 'EXECUTADA' }">
+											<form action="${pageContext.request.contextPath}/ordemServico/pagar" method="post" style="display:inline;">
+												<input type="hidden" name="id" value="${ ordemServico.id }">
+												<button type="submit" class="btn-primario">Pagar</button>
+											</form>
+										</c:if>
+										<button type="button" class="btn-info" onclick="abrirDetalhesOrdem(${ ordemServico.id });">Detalhes</button>
+									</td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -158,16 +110,51 @@
 			</c:otherwise>
 		</c:choose>
 	</div>
+
+	<!-- Modal Detalhes via Ajax -->
+	<div id="modalDetalhes" class="modal-fundo">
+		<div class="modal-conteudo">
+			<h2>Detalhes da Ordem de Serviço #<span id="detalheOsId"></span></h2>
+			<div id="detalheOsCorpo">Carregando...</div>
+			<div style="text-align: right; margin-top: 16px;">
+				<button type="button" class="btn-secundario" onclick="$('#modalDetalhes').fadeOut(150);">Fechar</button>
+			</div>
+		</div>
+	</div>
+
 	<script type="text/javascript">
 		function cancelarOrdemServico(id) {
 			if (confirm("Deseja realmente cancelar esta ordem de serviço?")) {
 				$.post("${pageContext.request.contextPath}/ordemServico/cancelarOrdemServicoAjax", { 'id': id }, function () {
-					$("#status_" + id).text("Cancelada");
-					$("#acao_" + id).empty();
+					$("#status_" + id).html('<span class="badge-status status-CANCELADA">Cancelada</span>');
+					$("#acao_" + id).html('<button type="button" class="btn-info" onclick="abrirDetalhesOrdem(' + id + ');">Detalhes</button>');
 				}).fail(function () {
 					alert("Não foi possível cancelar a ordem de serviço.");
 				});
 			}
+		}
+
+		function abrirDetalhesOrdem(id) {
+			$("#detalheOsId").text(id);
+			$("#detalheOsCorpo").html("<p>Carregando serviços...</p>");
+			$("#modalDetalhes").css("display", "flex");
+
+			$.post("${pageContext.request.contextPath}/ordemServico/detalhesAjax", { 'id': id }, function (data) {
+				let html = "<table class='tabela-compacta'><thead><tr><th>Serviço Realizado</th><th>Valor na Época</th></tr></thead><tbody>";
+				data.itens.forEach(function (item) {
+					html += "<tr><td>" + item.nome + "</td><td>R$ " + Number(item.valor).toFixed(2).replace('.', ',') + "</td></tr>";
+				});
+				html += "</tbody></table>";
+
+				if (Number(data.desconto) > 0) {
+					html += "<p style='color:#166534; margin-top:12px;'><strong>Desconto aplicado (10%):</strong> - R$ " + Number(data.desconto).toFixed(2).replace('.', ',') + "</p>";
+				}
+				html += "<p style='text-align:right; font-size:16px; margin-top:12px;'><strong>Valor Total: R$ " + Number(data.valorFinal).toFixed(2).replace('.', ',') + "</strong></p>";
+
+				$("#detalheOsCorpo").html(html);
+			}, "json").fail(function () {
+				$("#detalheOsCorpo").html("<p>Não foi possível carregar os detalhes desta ordem.</p>");
+			});
 		}
 	</script>
 </body>

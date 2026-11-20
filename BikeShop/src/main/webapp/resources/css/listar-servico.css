@@ -2,11 +2,13 @@
 
 body {
 	background-color: #f4f4f5;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	margin: 0;
 }
 
 .conteudo-principal {
 	padding: 32px;
-	max-width: 1100px;
+	max-width: 1150px;
 	margin: 0 auto;
 }
 
@@ -15,6 +17,8 @@ body {
 	justify-content: space-between;
 	align-items: center;
 	margin-bottom: 24px;
+	flex-wrap: wrap;
+	gap: 12px;
 }
 
 .topo-pagina h1 {
@@ -30,8 +34,11 @@ body {
 	font-size: 14px;
 	font-weight: 600;
 	padding: 10px 18px;
+	border: none;
 	border-radius: 6px;
+	cursor: pointer;
 	transition: background-color 0.2s;
+	display: inline-block;
 }
 
 .btn-novo:hover {
@@ -65,11 +72,47 @@ body {
 	overflow-x: auto;
 }
 
+/* Substitua a regra 'table' antiga por esta: */
 table {
 	width: 100%;
 	border-collapse: collapse;
 	text-align: center;
 	table-layout: fixed;
+}
+
+/* Adicione estas 3 regras logo abaixo do 'th' para travar as colunas: */
+th:nth-child(1), td:nth-child(1) {
+	width: 55%;
+}
+
+th:nth-child(2), td:nth-child(2) {
+	width: 23%;
+}
+
+th:nth-child(3), td:nth-child(3) {
+	width: 22%;
+}
+
+/* Substitua a regra 'td' antiga por esta: */
+td {
+	padding: 0 16px;
+	height: 30px;
+	font-size: 14px;
+	color: #27272a;
+	border-bottom: 1px solid #e4e4e7;
+	vertical-align: middle;
+}
+
+/* Substitua a regra '.input-preco' antiga por esta: */
+.input-preco {
+	width: 95px;
+	height: 30px;
+	padding: 0 8px;
+	box-sizing: border-box;
+	font-size: 14px;
+	text-align: center;
+	border: 1px solid #d4d4d8;
+	border-radius: 5px;
 }
 
 thead {
@@ -83,28 +126,13 @@ th {
 	font-weight: 600;
 	text-transform: uppercase;
 	letter-spacing: 0.5px;
-	text-align: left;
-}
-
-th:nth-child(1), td:nth-child(1) {
-	width: 400px;
-}
-
-th:nth-child(2), td:nth-child(2) {
-	width: 150px;
-}
-
-th:nth-child(3), td:nth-child(3) {
-	width: 100px;
 }
 
 td {
-	padding: 12px 16px;
-	height: 52px;
+	padding: 14px 16px;
 	font-size: 14px;
 	color: #27272a;
 	border-bottom: 1px solid #e4e4e7;
-	text-align: left;
 }
 
 tbody tr:last-child td {
@@ -115,15 +143,16 @@ tbody tr:hover {
 	background-color: #fafafa;
 }
 
-input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+/* Mantém o estilo do input de edição inline do preço */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
 	-webkit-appearance: none;
 	margin: 0;
 }
 
-
 .input-preco {
-	width: 60px !important;
-	padding: 6px 8px !important;
+	width: 90px;
+	padding: 6px 8px;
 	font-size: 14px;
 	text-align: center;
 	border: 1px solid #d4d4d8;
@@ -134,4 +163,40 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 	outline: none;
 	border-color: #f97316;
 	box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.18);
+}
+
+.btn-info {
+	background-color: #2563eb;
+	color: #ffffff;
+	text-decoration: none;
+	font-size: 13px;
+	font-weight: 600;
+	padding: 6px 12px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	display: inline-block;
+	transition: background-color 0.2s;
+}
+
+.btn-info:hover {
+	background-color: #1d4ed8;
+}
+
+.btn-sucesso {
+	background-color: #16a34a;
+	color: #ffffff;
+	text-decoration: none;
+	font-size: 13px;
+	font-weight: 600;
+	padding: 6px 12px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	display: inline-block;
+	transition: background-color 0.2s;
+}
+
+.btn-sucesso:hover {
+	background-color: #15803d;
 }

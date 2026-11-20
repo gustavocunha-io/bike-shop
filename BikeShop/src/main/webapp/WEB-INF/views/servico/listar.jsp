@@ -44,7 +44,9 @@
 								<tr>
 									<td>${ servico.tipo }</td>
 									<td id="valor_${ servico.id }"><fmt:formatNumber value="${ servico.valor }" type="currency"></fmt:formatNumber></td>
-									<td id="alterar_${ servico.id }"><a href="#" onclick="alterarPreco(${ servico.id }, ${ servico.valor }); return false;">Alterar Preço</a></td>
+									<td id="alterar_${ servico.id }">
+										<button type="button" class="btn-info" onclick="alterarPreco(${ servico.id });">Alterar Preço</button>
+									</td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -57,14 +59,13 @@
 		function alterarPreco(id) {
 			var textoAtual = $("#valor_" + id).text();
 			var valorLimpo = textoAtual.replace("R$", "").replace(/\./g, "").replace(",", ".").trim();
-			var input_preco = '<input id="novo-valor-' + id + '" step="0.01" class="input-preco" type="number" value="' + valorLimpo + '" style="width: 100px;">';
+			var input_preco = '<input id="novo-valor-' + id + '" step="0.01" class="input-preco" type="number" value="' + valorLimpo + '">';
 			
 			$("#valor_" + id).html(input_preco);
 			$("#novo-valor-" + id).focus();
 	
-			var link_salvar = '<a href="#" onclick="salvarPreco(' + id + '); return false;">Salvar</a>';
-			
-			$("#alterar_" + id).html(link_salvar);
+			var btn_salvar = '<button type="button" class="btn-sucesso" onclick="salvarPreco(' + id + ');">Salvar</button>';
+			$("#alterar_" + id).html(btn_salvar);
 		}
 			
 		function salvarPreco(id) {
@@ -76,9 +77,8 @@
 			}, function(valor_formatado) {
 				$("#valor_" + id).html(valor_formatado);
 	
-				var link_alterar = '<a href="#" onclick="alterarPreco(' + id + '); return false;">Alterar Preço</a>';
-				
-				$("#alterar_" + id).html(link_alterar);
+				var btn_alterar = '<button type="button" class="btn-info" onclick="alterarPreco(' + id + ');">Alterar Preço</button>';
+				$("#alterar_" + id).html(btn_alterar);
 			}).fail(function() {
 				alert("Erro ao atualizar o preço.");
 			});

@@ -1,5 +1,6 @@
 package br.gasc.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -43,7 +44,29 @@ public class OrdemServicoService {
 		ordemServicoDAO.alterar(ordemServico);
 	}
 	
+	public List<OrdemServico> filtrarOrdemServico(String statusFiltro, LocalDate dataInicio, LocalDate dataExata) {
+	    StatusOrdemServico status = null;
+
+	    if (statusFiltro != null && !statusFiltro.isEmpty() && !"TODOS".equalsIgnoreCase(statusFiltro)) {
+	        try {
+	            status = StatusOrdemServico.valueOf(statusFiltro.toUpperCase());
+	        } catch (IllegalArgumentException e) {
+	            status = StatusOrdemServico.AGENDADA;
+	        }
+	    }
+
+	    return ordemServicoDAO.filtrar(status, dataInicio, dataExata);
+	}
+	
 	public List<OrdemServico> listarOrdemServicoPorStatus(StatusOrdemServico statusOrdemServico) {
 		return ordemServicoDAO.listarPorStatus(statusOrdemServico);
+	}
+	
+	public List<OrdemServico> listarHistoricoPorCliente(Long idCliente) {
+		return ordemServicoDAO.listarHistoricoPorCliente(idCliente);
+	}
+
+	public List<OrdemServico> listarHistoricoPorBicicleta(Long idBicicleta) {
+		return ordemServicoDAO.listarHistoricoPorBicicleta(idBicicleta);
 	}
 }

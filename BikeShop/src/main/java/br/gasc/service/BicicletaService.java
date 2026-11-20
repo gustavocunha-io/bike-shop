@@ -27,6 +27,10 @@ public class BicicletaService {
 		bicicletaDAO.inserir(bicicleta);
 	}
 	
+	public Bicicleta pesquisarPorId(Long id) {
+		return bicicletaDAO.pesquisar(id);
+	}
+	
 	public List<Bicicleta> obterBicicletasCliente(Long id) {
 		if(id == null)
 			throw new RegraNegocioException("");
