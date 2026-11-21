@@ -28,7 +28,7 @@ public class AdministradorController {
 	    admin.setSenha(BCrypt.hashpw("123456", BCrypt.gensalt()));
 	    new DAO<Administrador>(Administrador.class).inserir(admin);
 	    
-	    return "Admin criado com sucesso!";
+	    return "loginAdmin";
 	}
 	
 	@RequestMapping(value = "loginAdmin", method = RequestMethod.GET)

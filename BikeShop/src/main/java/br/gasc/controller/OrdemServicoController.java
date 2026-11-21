@@ -2,10 +2,10 @@ package br.gasc.controller;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -134,13 +134,12 @@ public class OrdemServicoController {
 	@RequestMapping(value = "cancelarOrdemServicoAjax")
 	public void cancelarOrdemServico(@RequestParam(value = "id") Long id, Model model) {
 		try {
-			OrdemServicoService ordemServicoService = new OrdemServicoService();
 			OrdemServico ordemServico = ordemServicoService.pesquisarPorId(id);
 			
 			ordemServico.setStatus(StatusOrdemServico.CANCELADA);
 			ordemServicoService.alterarOrdemServico(ordemServico);
-		} catch (Exception e) {
-			model.addAttribute("erro", MSG_ERRO_CANCELAR_ORDEM_SERVICO);
+		} catch (RegraNegocioException regraNegocioException) {
+			model.addAttribute("erro", regraNegocioException.getMessage());
 		}
 	}
 	
@@ -150,7 +149,7 @@ public class OrdemServicoController {
 		return "ordem-servico/listar";
 	}
 	
-	@RequestMapping(value = "listarOrdensServicos", method = RequestMethod.POST)
+	@RequestMapping(value = "listarOrdensServicos", method = {RequestMethod.POST, RequestMethod.GET})
 	public String listarOrdensServicos(
 	@RequestParam(value = "status", required = false, defaultValue = "AGENDADA") String statusFiltro,
 	@RequestParam(value = "dataInicio", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dataInicio,
@@ -166,52 +165,131 @@ public class OrdemServicoController {
 	    
 	    return "ordem-servico/listar";
 	}
-	
-	@RequestMapping(value = "historicoCliente", method = RequestMethod.POST)
-	public String historicoCliente(@RequestParam("id") Long idCliente, Model model) {
-		ClienteService clienteService = new ClienteService();
-		Cliente cliente = clienteService.pesquisarPorId(idCliente);
 
-		model.addAttribute("tituloHistorico", "Histórico de Serviços — Cliente: " + cliente.getNome());
-		model.addAttribute("tipoHistorico", "CLIENTE");
-		model.addAttribute("ordensServicosList", ordemServicoService.listarHistoricoPorCliente(idCliente));
-		
-		return "ordem-servico/historico";
-	}
-
-	@RequestMapping(value = "historicoBicicleta", method = RequestMethod.POST)
-	public String historicoBicicleta(@RequestParam("id") Long idBicicleta, Model model) {
-		BicicletaService bicicletaService = new BicicletaService();
-		Bicicleta bicicleta = bicicletaService.pesquisarPorId(idBicicleta);
-
-		model.addAttribute("tituloHistorico", "Histórico de Serviços — Bicicleta: " + bicicleta.getMarca() + " " + bicicleta.getModelo());
-		model.addAttribute("tipoHistorico", "BICICLETA");
-		model.addAttribute("ordensServicosList", ordemServicoService.listarHistoricoPorBicicleta(idBicicleta));
-		
-		return "ordem-servico/historico";
-	}
-
-	@ResponseBody
 	@RequestMapping(value = "detalhesAjax", method = RequestMethod.POST)
-	public Map<String, Object> detalhesAjax(@RequestParam("id") Long id) {
-		OrdemServico os = ordemServicoService.pesquisarPorId(id);
+	public String detalhesAjax(@RequestParam("id") Long id, Model model) {
+	    OrdemServico ordemServico = ordemServicoService.pesquisarPorIdComServicos(id);
+	    model.addAttribute("ordemServico", ordemServico);
+	    return "ordem-servico/detalhes";
+	}
+	
+	@RequestMapping(value = "executarOrdemServico", method = {RequestMethod.POST, RequestMethod.GET})
+	public String executarOrdemServico(@RequestParam("id") Long id, Model model) {
+	    OrdemServico ordemServico = ordemServicoService.pesquisarPorIdComServicos(id);
 
-		List<> itensJson = new ArrayList<>();
-		for (ItemOrdemServico item : os.getServicosList()) {
-			Map<String, Object> itemMap = new HashMap<>();
-			itemMap.put("nome", item.getServico().getTipo());
-			itemMap.put("valor", item.getValorUnitario());
-			itensJson.add(itemMap);
-		}
+	    if (ordemServico == null)
+	        return "redirect:/ordemServico/listarOrdemServico";
+	    
+	    List<Long> idsNaOrdem = new ArrayList<>();
+	    
+	    for (ItemOrdemServico item : ordemServico.getServicosList())
+	        idsNaOrdem.add(item.getServico().getId());
 
-		Map<String, Object> resposta = new HashMap<>();
-		resposta.put("cliente", os.getCliente() != null ? os.getCliente().getNome() : "Sem proprietário");
-		resposta.put("dataExecucao", os.getDataExecucao() != null ? os.getDataExecucao().toString() : "Não informada");
-		resposta.put("desconto", os.getValorDesconto() != null ? os.getValorDesconto() : BigDecimal.ZERO);
-		resposta.put("valorFinal", os.getValorFinal() != null ? os.getValorFinal() : BigDecimal.ZERO);
-		resposta.put("itens", itensJson);
+	    List<Servico> servicosCatalogo = new ArrayList<>();
+	    
+	    for (Servico servico : new ServicoService().listarServicos())
+	        if (!idsNaOrdem.contains(servico.getId()))
+	            servicosCatalogo.add(servico);
 
-		return resposta;
+	    model.addAttribute("ordemServico", ordemServico);
+	    model.addAttribute("servicosCatalogo", servicosCatalogo);
+	    model.addAttribute("dataExecucao", LocalDate.now());
+	    model.addAttribute("aplicarDesconto", false);
+
+	    return "ordem-servico/executar";
+	}
+	
+	@RequestMapping(value = "confirmarExecucao", method = RequestMethod.POST)
+	public String confirmarExecucaoOrdemServico(
+	        @RequestParam("idOrdemServico") Long idOrdemServico,
+	        @RequestParam("dataExecucao") String dataExecucaoStr,
+	        @RequestParam(value = "servicosSelecionadosIds", required = false) List<Long> servicosSelecionadosIds,
+	        @RequestParam(value = "aplicarDesconto", defaultValue = "false") boolean aplicarDesconto,
+	        RedirectAttributes redirectAttributes) {
+
+	    if (servicosSelecionadosIds == null || servicosSelecionadosIds.isEmpty()) {
+	        redirectAttributes.addFlashAttribute("erro", "Selecione pelo menos um serviço executado.");
+	        redirectAttributes.addAttribute("id", idOrdemServico);
+	        return "redirect:/ordemServico/executarOrdemServico";
+	    }
+
+	    try {
+	        OrdemServico ordemServico = ordemServicoService.pesquisarPorIdComServicos(idOrdemServico);
+
+	        if (ordemServico == null)
+	            return "redirect:/ordemServico/listarOrdemServico";
+
+	        ServicoService servicoService = new ServicoService();
+
+	        ordemServico.getServicosList().removeIf(item -> !servicosSelecionadosIds.contains(item.getServico().getId()));
+
+	        List<Long> idsNaOrdem = new ArrayList<>();
+	        
+	        for (ItemOrdemServico item : ordemServico.getServicosList())
+	            idsNaOrdem.add(item.getServico().getId());
+
+	        for (Long idServico : servicosSelecionadosIds) {
+	            if (idsNaOrdem.contains(idServico))
+	                continue;
+
+	            Servico servico = servicoService.pesquisarServicoId(idServico);
+	            ItemOrdemServico novo = new ItemOrdemServico();
+	            
+	            novo.setOrdemServico(ordemServico);
+	            novo.setServico(servico);
+	            novo.setValorUnitario(servico.getValor());
+	            ordemServico.getServicosList().add(novo);
+	        }
+
+	        BigDecimal valorBruto = BigDecimal.ZERO;
+	        
+	        for (ItemOrdemServico item : ordemServico.getServicosList())
+	            valorBruto = valorBruto.add(item.getValorUnitario());
+
+	        BigDecimal desconto = BigDecimal.ZERO;
+	        
+	        if (aplicarDesconto && ordemServico.getServicosList().size() >= 3)
+	            desconto = valorBruto.divide(new BigDecimal(100), 2, RoundingMode.HALF_UP).multiply(DESCONTO_SERVICOS);
+
+	        ordemServico.setValorBruto(valorBruto);
+	        ordemServico.setValorFinal(valorBruto.subtract(desconto));
+	        ordemServico.setDataExecucao(Date.valueOf(dataExecucaoStr));
+	        ordemServico.setStatus(StatusOrdemServico.EXECUTADA);
+	        ordemServicoService.alterarOrdemServico(ordemServico);
+	        redirectAttributes.addFlashAttribute("sucesso", "Ordem de serviço executada com sucesso!");
+	        
+	        return "redirect:/ordemServico/listarOrdemServico";
+	    } catch (RegraNegocioException regraNegocioException) {
+	        redirectAttributes.addFlashAttribute("erro", regraNegocioException.getMessage());
+	        redirectAttributes.addAttribute("id", idOrdemServico);
+	        return "redirect:/ordemServico/executarOrdemServico";
+	    }
+	}
+	
+	@RequestMapping(value = "pagar", method = RequestMethod.POST)
+	public String pagarOrdemServico(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
+	    try {
+	        OrdemServico ordemServico = ordemServicoService.pesquisarPorId(id);
+
+	        if (ordemServico == null) {
+	            redirectAttributes.addFlashAttribute("erro", "Ordem de serviço não encontrada.");
+	            return "redirect:/ordemServico/listarOrdemServico";
+	        }
+
+	        if (ordemServico.getStatus() != StatusOrdemServico.EXECUTADA) {
+	            redirectAttributes.addFlashAttribute("erro", "Só é possível pagar ordens de serviço executadas.");
+	            return "redirect:/ordemServico/listarOrdemServico";
+	        }
+
+	        ordemServico.setStatus(StatusOrdemServico.PAGA);
+	        ordemServicoService.alterarOrdemServico(ordemServico);
+	        redirectAttributes.addFlashAttribute("sucesso", "Pagamento registrado com sucesso!");
+	        
+	        return "redirect:/ordemServico/listarOrdemServico";
+	    } catch (RegraNegocioException regraNegocioException) {
+	        redirectAttributes.addFlashAttribute("erro", regraNegocioException.getMessage());
+	        return "redirect:/ordemServico/listarOrdemServico";
+	    }
 	}
 	
 	@RequestMapping(value = "buscarCliente")

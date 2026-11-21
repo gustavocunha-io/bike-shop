@@ -14,7 +14,7 @@
 	
 	<div class="conteudo-principal">
 		<div class="topo-pagina">
-			<h1>Clientes Cadastrados</h1>
+			<h1>Servicos Cadastrados</h1>
 			<a href="${pageContext.request.contextPath}/servico/cadastrarServico" class="btn-novo">+ Novo Servico</a>
 		</div>
 		<c:if test="${ not empty sucesso }">

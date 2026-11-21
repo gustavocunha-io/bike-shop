@@ -213,7 +213,7 @@
 
 		<div class="acoes" style="margin-top: 24px;">
 			<input type="submit" value="Salvar">
-			<a href="${pageContext.request.contextPath}/ordemServico/listarOrdemServico" class="btn-voltar">Voltar</a>
+			<a href="${pageContext.request.contextPath}/ordemServico/pesquisarCliente" class="btn-voltar">Voltar</a>
 		</div>
 	</form>
 	<script type="text/javascript">

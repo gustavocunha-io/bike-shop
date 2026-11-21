@@ -98,22 +98,22 @@
 				<h3>+ Novo Cliente</h3>
 				<p>Cadastrar ciclista para abertura de revisão ou orçamento.</p>
 			</a>
+			
+			<a href="${pageContext.request.contextPath}/bicicleta/cadastrarBicicleta" class="card-atalho">
+				<h3>+ Nova Bicicleta</h3>
+				<p>Cadastrar quadro, modelo, aro e marca ao cliente.</p>
+			</a>
+			
+			<a href="${pageContext.request.contextPath}/ordemServico/pesquisarCliente" class="card-atalho">
+				<h3>+ Nova Ordem de Serviço</h3>
+				<p>Cadastrar revisões gerais, sangria de freio e trocas de peças.</p>
+			</a>
 
 			<a href="${pageContext.request.contextPath}/cliente/listarClientes" class="card-atalho">
 				<h3>Clientes Cadastrados</h3>
 				<p>Consultar dados de contato e histórico de clientes.</p>
-			</a>
-
-			<%-- Exemplos de próximos módulos da sua oficina --%>
-			<a href="#" class="card-atalho">
-				<h3>Bicicletas</h3>
-				<p>Vincular quadro, modelo, aro e marca ao cliente.</p>
-			</a>
-
-			<a href="#" class="card-atalho">
-				<h3>Ordens de Serviço</h3>
-				<p>Acompanhar revisões gerais, sangria de freio e trocas de peças.</p>
-			</a>
+			</a>			
+			
 		</div>
 	</div>
 </body>

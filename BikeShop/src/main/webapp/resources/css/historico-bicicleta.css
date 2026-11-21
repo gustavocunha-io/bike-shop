@@ -1,0 +1,16 @@
+@charset "UTF-8";
+
+.pagina-historico-bicicleta .campo-filtro select {
+	min-width: 240px;
+}
+
+.pagina-historico-bicicleta .total-geral {
+	text-align: right;
+	margin-top: 12px;
+	font-size: 16px;
+}
+
+.pagina-historico-bicicleta .modal-acoes {
+	text-align: right;
+	margin-top: 16px;
+}

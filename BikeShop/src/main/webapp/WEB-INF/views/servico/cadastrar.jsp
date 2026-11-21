@@ -141,7 +141,7 @@
 		</div>
 		<div class="acoes">
 			<input type="submit" value="Salvar">
-			<a href="${pageContext.request.contextPath}/servico/listarServico" class="btn-voltar">Voltar</a>
+			<a href="${pageContext.request.contextPath}/paginaInicial" class="btn-voltar">Voltar</a>
 		</div>
 	</form>
 </body>

@@ -71,16 +71,56 @@
 		background-color: #dc2626;
 		color: #ffffff;
 	}
+	
+	.cabecalho-container nav span.menu-dropdown {
+	position: relative;
+	display: flex;
+	align-items: center;
+	height: 60px;
+}
+
+	.menu-dropdown-itens {
+		display: none;
+		position: absolute;
+		top: 100%;
+		left: 0;
+		min-width: 170px;
+		background-color: #18181b;
+		border-top: 2px solid #f97316;
+		border-radius: 0 0 6px 6px;
+		box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+		overflow: hidden;
+	}
+	
+	.cabecalho-container nav .menu-dropdown-itens a {
+		display: block;
+		padding: 12px 16px;
+		border-radius: 0;
+	}
+	
+	.menu-dropdown:hover .menu-dropdown-itens {
+		display: block;
+	}
 </style>
 
 <div class="cabecalho-container">
-	<nav>
-		<div class="marca-oficina">GASC <span>Bike Shop</span></div>
-		<span><a href="${pageContext.request.contextPath}/paginaInicial">Início</a></span>
-		<span><a href="${pageContext.request.contextPath}/cliente/listarClientes">Clientes</a></span>
-		<span><a href="${pageContext.request.contextPath}/bicicleta/listarBicicletas">Bicicletas</a></span>
-		<span><a href="${pageContext.request.contextPath}/servico/listarServicos">Serviços</a></span>
-		<span><a href="${pageContext.request.contextPath}/ordemServico/listarOrdemServico">Ordens de Serviço</a></span>
-		<span><a href="${pageContext.request.contextPath}/logoutAdmin">Sair</a></span>
-	</nav>
+<nav>
+	<div class="marca-oficina">GASC <span>Bike Shop</span></div>
+	<span><a href="${pageContext.request.contextPath}/paginaInicial">Início</a></span>
+	<span><a href="${pageContext.request.contextPath}/cliente/listarClientes">Clientes</a></span>
+	<span><a href="${pageContext.request.contextPath}/bicicleta/listarBicicletas">Bicicletas</a></span>
+	<span><a href="${pageContext.request.contextPath}/servico/listarServicos">Serviços</a></span>
+	<span><a href="${pageContext.request.contextPath}/ordemServico/listarOrdemServico">Ordens de Serviço</a></span>
+
+	<span class="menu-dropdown">
+		<a href="#" onclick="return false;">Histórico ▾</a>
+		<div class="menu-dropdown-itens">
+			<a href="${pageContext.request.contextPath}/historico/historicoClientes">Por Cliente</a>
+			<a href="${pageContext.request.contextPath}/historico/historicoBicicletas">Por Bicicleta</a>
+		</div>
+	</span>
+	<span><a href="${pageContext.request.contextPath}/historico/relatorio">Relatório</a></span>
+
+	<span><a href="${pageContext.request.contextPath}/logoutAdmin">Sair</a></span>
+</nav>
 </div>

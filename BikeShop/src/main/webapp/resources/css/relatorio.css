@@ -1,0 +1,24 @@
+@charset "UTF-8";
+
+.pagina-historico-relatorio .tabela-os tfoot td {
+	border-top: 2px solid #f97316;
+	background-color: #fafafa;
+	font-size: 16px;
+}
+
+.pagina-historico-relatorio .rotulo-total {
+	text-align: right;
+}
+
+.pagina-historico-relatorio .tabela-os td:nth-child(5),
+.pagina-historico-relatorio .tabela-os td:nth-child(6),
+.pagina-historico-relatorio .tabela-os td:nth-child(7) {
+	white-space: nowrap;
+}
+
+@media print {
+	.pagina-historico-relatorio .barra-filtros,
+	.cabecalho-container {
+		display: none;
+	}
+}

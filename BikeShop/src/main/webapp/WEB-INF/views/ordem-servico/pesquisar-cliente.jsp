@@ -142,7 +142,7 @@
 			<small id="msg-cliente" style="display: block; margin-top: 6px; font-size: 13px; font-weight: 600;"></small>
 			<div class="acoes">
 			<input type="submit" value="Buscar">
-				<a href="${pageContext.request.contextPath}/ordemServico/listar" class="btn-voltar">Voltar</a>
+				<a href="${pageContext.request.contextPath}/paginaInicial" class="btn-voltar">Voltar</a>
 			</div>
 		</div>
 	</form>

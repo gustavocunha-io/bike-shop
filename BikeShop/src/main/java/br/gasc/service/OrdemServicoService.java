@@ -1,5 +1,6 @@
 package br.gasc.service;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -58,9 +59,6 @@ public class OrdemServicoService {
 	    return ordemServicoDAO.filtrar(status, dataInicio, dataExata);
 	}
 	
-	public List<OrdemServico> listarOrdemServicoPorStatus(StatusOrdemServico statusOrdemServico) {
-		return ordemServicoDAO.listarPorStatus(statusOrdemServico);
-	}
 	
 	public List<OrdemServico> listarHistoricoPorCliente(Long idCliente) {
 		return ordemServicoDAO.listarHistoricoPorCliente(idCliente);
@@ -68,5 +66,20 @@ public class OrdemServicoService {
 
 	public List<OrdemServico> listarHistoricoPorBicicleta(Long idBicicleta) {
 		return ordemServicoDAO.listarHistoricoPorBicicleta(idBicicleta);
+	}
+	
+	public List<OrdemServico> listarOrdemServicoPorStatus(StatusOrdemServico statusOrdemServico) {
+		return ordemServicoDAO.listarPorStatusComServicos(statusOrdemServico);
+	}
+	
+	public List<OrdemServico> listarHistoricoPorPeriodo(Date dataInicio, Date dataFim) {
+		return ordemServicoDAO.listarHistoricoPorPeriodo(dataInicio, dataFim);
+	}
+
+	public OrdemServico pesquisarPorIdComServicos(Long id) {
+		if (id == null)
+			throw new RegraNegocioException(MSG_ERRO_ORDEM_SERVICO_NULA);
+
+		return ordemServicoDAO.pesquisarComServicos(id);
 	}
 }

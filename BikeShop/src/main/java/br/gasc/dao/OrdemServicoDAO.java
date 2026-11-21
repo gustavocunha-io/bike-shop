@@ -1,5 +1,6 @@
 package br.gasc.dao;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -75,9 +76,31 @@ public class OrdemServicoDAO extends DAO<OrdemServico> {
 					"SELECT DISTINCT os FROM ordem_servico os LEFT JOIN FETCH os.servicosList " +
 					"WHERE os.bicicleta.id = :idBicicleta AND os.status IN (:executada, :paga) " +
 					"ORDER BY os.dataExecucao DESC", OrdemServico.class);
+			
 			query.setParameter("idBicicleta", idBicicleta);
 			query.setParameter("executada", StatusOrdemServico.EXECUTADA);
 			query.setParameter("paga", StatusOrdemServico.PAGA);
+			
+			return query.getResultList();
+		} finally {
+			entityManager.close();
+		}
+	}
+	
+	public List<OrdemServico> listarHistoricoPorPeriodo(Date dataInicio, Date dataFim) {
+		EntityManager entityManager = new JPAUtil().getEntityManager();
+		try {
+			TypedQuery<OrdemServico> query = entityManager.createQuery(
+					"SELECT DISTINCT os FROM ordem_servico os LEFT JOIN FETCH os.servicosList item LEFT JOIN FETCH item.servico " +
+					"LEFT JOIN FETCH os.bicicleta LEFT JOIN FETCH os.cliente " +
+					"WHERE os.dataExecucao BETWEEN :dataInicio AND :dataFim AND os.status IN (:executada, :paga) " +
+					"ORDER BY os.dataExecucao ASC", OrdemServico.class);
+			
+			query.setParameter("dataInicio", dataInicio);
+			query.setParameter("dataFim", dataFim);
+			query.setParameter("executada", StatusOrdemServico.EXECUTADA);
+			query.setParameter("paga", StatusOrdemServico.PAGA);
+			
 			return query.getResultList();
 		} finally {
 			entityManager.close();
@@ -88,10 +111,43 @@ public class OrdemServicoDAO extends DAO<OrdemServico> {
 		EntityManager entityManager = new JPAUtil().getEntityManager();
 		
 		try {
-		
 			TypedQuery<OrdemServico> query = entityManager.createQuery("SELECT os FROM ordem_servico os WHERE os.status = :status", OrdemServico.class);
 			query.setParameter("status", statusOrdemServico);
+			
 			return query.getResultList();
+		} catch (NoResultException noResultException) {
+			return null;
+		} finally {
+			entityManager.close();
+		}
+	}
+	
+	public List<OrdemServico> listarPorStatusComServicos(StatusOrdemServico statusOrdemServico) {
+		EntityManager entityManager = new JPAUtil().getEntityManager();
+		try {
+			TypedQuery<OrdemServico> query = entityManager.createQuery(
+					"SELECT DISTINCT os FROM ordem_servico os LEFT JOIN FETCH os.servicosList " +
+					"WHERE os.status = :status ORDER BY os.dataAgendamento ASC",
+					OrdemServico.class);
+			query.setParameter("status", statusOrdemServico);
+			return query.getResultList();
+		} catch (NoResultException noResultException) {
+			return null;
+		} finally {
+			entityManager.close();
+		}
+	}
+	
+	public OrdemServico pesquisarComServicos(Long id) {
+		EntityManager entityManager = new JPAUtil().getEntityManager();
+		try {
+			List<OrdemServico> resultado = entityManager.createQuery(
+					"SELECT DISTINCT os FROM ordem_servico os LEFT JOIN FETCH os.servicosList " +
+					"WHERE os.id = :id",
+					OrdemServico.class)
+					.setParameter("id", id)
+					.getResultList();
+			return resultado.isEmpty() ? null : resultado.get(0);
 		} catch (NoResultException noResultException) {
 			return null;
 		} finally {
