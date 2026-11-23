@@ -1,7 +1,7 @@
 package br.gasc.model;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,10 +27,10 @@ public class OrdemServico {
 	private Long id;
 	
 	@Column(nullable = false)
-	private Date dataAgendamento;
+	private LocalDate dataAgendamento;
 	
 	@Column(nullable = true)
-	private Date dataExecucao;
+	private LocalDate dataExecucao;
 	
 	@Column(nullable = false, precision = 10, scale = 2)
 	private BigDecimal valorBruto;
@@ -62,19 +62,19 @@ public class OrdemServico {
 		this.id = id;
 	}
 	
-	public Date getDataAgendamento() {
+	public LocalDate getDataAgendamento() {
 		return dataAgendamento;
 	}
 
-	public void setDataAgendamento(Date dataAgendamento) {
+	public void setDataAgendamento(LocalDate dataAgendamento) {
 		this.dataAgendamento = dataAgendamento;
 	}
 	
-	public Date getDataExecucao() {
+	public LocalDate getDataExecucao() {
 		return dataExecucao;
 	}
 
-	public void setDataExecucao(Date dataExecucao) {
+	public void setDataExecucao(LocalDate dataExecucao) {
 		this.dataExecucao = dataExecucao;
 	}
 

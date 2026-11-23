@@ -5,7 +5,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Lista de Servicos</title>
+	<title>Servicos - GASC Bike</title>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/listar-servico.css">
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-4.1.0.js"></script>
 </head>

@@ -1,6 +1,5 @@
 package br.gasc.service;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -31,6 +30,9 @@ public class OrdemServicoService {
 	public void cadastrarOrdemServico(OrdemServico ordemServico) {
 		if(ordemServico == null)
 			throw new RegraNegocioException(MSG_ERRO_ORDEM_SERVICO_NULA);
+		
+		if(ordemServico.getDataAgendamento().isBefore(LocalDate.now()))
+			throw new RegraNegocioException(MSG_ERRO_DATA_AGENDAMENTO_PASSADA);
 		
 		if(ordemServico.getServicosList().size() < 1)
 			throw new RegraNegocioException(MSG_ERRO_SERVICO_MENOR_QUE_1);
@@ -72,7 +74,7 @@ public class OrdemServicoService {
 		return ordemServicoDAO.listarPorStatusComServicos(statusOrdemServico);
 	}
 	
-	public List<OrdemServico> listarHistoricoPorPeriodo(Date dataInicio, Date dataFim) {
+	public List<OrdemServico> listarHistoricoPorPeriodo(LocalDate dataInicio, LocalDate dataFim) {
 		return ordemServicoDAO.listarHistoricoPorPeriodo(dataInicio, dataFim);
 	}
 

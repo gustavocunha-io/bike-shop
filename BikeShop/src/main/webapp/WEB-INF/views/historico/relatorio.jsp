@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ page import="br.gasc.utils.DataUtil" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -52,7 +53,7 @@
 								<c:forEach var="ordemServico" items="${ ordensList }">
 									<c:set var="desconto" value="${ ordemServico.valorBruto - ordemServico.valorFinal }"/>
 									<tr>
-										<td><fmt:formatDate value="${ ordemServico.dataExecucao }" pattern="dd/MM/yyyy"/></td>
+										<td>${ DataUtil.dataFormatada(ordemServico.dataExecucao) }</td>
 										<td>${ ordemServico.cliente != null ? ordemServico.cliente.nome : 'Sem proprietário' }</td>
 										<td>${ ordemServico.bicicleta.marca } ${ ordemServico.bicicleta.modelo }</td>
 										<td>

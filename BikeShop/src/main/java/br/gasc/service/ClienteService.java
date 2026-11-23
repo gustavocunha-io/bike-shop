@@ -55,6 +55,9 @@ public class ClienteService {
 		if(cpf == null || cpf.isBlank())
 			throw new RegraNegocioException(MSG_ERRO_CPF_NULO);
 		
+		if(cpf.length() != 11)
+			throw new RegraNegocioException(MSG_ERRO_CPF_DIFERENTE_DE_11);
+		
 		if(clienteDao.buscarPorCpf(cpf).isEmpty())
 			throw new RegraNegocioException(MSG_ERRO_CPF_INEXISTENTE);
 		

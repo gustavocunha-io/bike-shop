@@ -2,7 +2,6 @@ package br.gasc.controller;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,10 +73,17 @@ public class OrdemServicoController {
 	public String salvarOrdemServico(@Valid OrdemServico ordemServico, BindingResult bindingResult,
 	@RequestParam(value = "idBicicleta") Long idBicicleta,
 	@RequestParam(value = "idCliente") Long idCliente,
-	@RequestParam(value = "servicosIDs", required = true) List<Long> servicosIDs,
+	@RequestParam(value = "servicosIDs", required = false) List<Long> servicosIDs,
 	@RequestParam(value = "aplicarDesconto", defaultValue = "false") boolean aplicarDesconto,
 	Model model, RedirectAttributes redirectAttributes) {
 		if(bindingResult.hasErrors()) {
+			redirectAttributes.addFlashAttribute("erro", "Erro: verifique os campos preenchidos.");
+			redirectAttributes.addAttribute("idCliente", idCliente);
+			return "redirect:/ordemServico/cadastrarOrdemServico";
+		}
+		
+		if(servicosIDs == null) {
+			redirectAttributes.addFlashAttribute("erro", "Erro: insira ao menos um serviço");
 			redirectAttributes.addAttribute("idCliente", idCliente);
 			return "redirect:/ordemServico/cadastrarOrdemServico";
 		}
@@ -123,7 +129,7 @@ public class OrdemServicoController {
 			
 			return "redirect:/ordemServico/listarOrdemServico";
 		} catch (RegraNegocioException regraNegocioException) {
-			model.addAttribute("erro", regraNegocioException.getMessage());
+			redirectAttributes.addFlashAttribute("erro", regraNegocioException.getMessage());
 			redirectAttributes.addAttribute("idCliente", idCliente);
 			
 			return "redirect:/ordemServico/cadastrarOrdemServico";
@@ -202,7 +208,7 @@ public class OrdemServicoController {
 	@RequestMapping(value = "confirmarExecucao", method = RequestMethod.POST)
 	public String confirmarExecucaoOrdemServico(
 	        @RequestParam("idOrdemServico") Long idOrdemServico,
-	        @RequestParam("dataExecucao") String dataExecucaoStr,
+	        @RequestParam("dataExecucao") LocalDate dataExecucao,
 	        @RequestParam(value = "servicosSelecionadosIds", required = false) List<Long> servicosSelecionadosIds,
 	        @RequestParam(value = "aplicarDesconto", defaultValue = "false") boolean aplicarDesconto,
 	        RedirectAttributes redirectAttributes) {
@@ -218,6 +224,13 @@ public class OrdemServicoController {
 
 	        if (ordemServico == null)
 	            return "redirect:/ordemServico/listarOrdemServico";
+	        
+	        if(dataExecucao.isBefore(ordemServico.getDataAgendamento())) {
+	        	redirectAttributes.addFlashAttribute("erro", "a data de execução não pode ser passa a data de agendamento.");
+	        	redirectAttributes.addAttribute("id", idOrdemServico);
+		        
+	        	return "redirect:/ordemServico/executarOrdemServico";
+	        }
 
 	        ServicoService servicoService = new ServicoService();
 
@@ -253,7 +266,7 @@ public class OrdemServicoController {
 
 	        ordemServico.setValorBruto(valorBruto);
 	        ordemServico.setValorFinal(valorBruto.subtract(desconto));
-	        ordemServico.setDataExecucao(Date.valueOf(dataExecucaoStr));
+	        ordemServico.setDataExecucao(dataExecucao);
 	        ordemServico.setStatus(StatusOrdemServico.EXECUTADA);
 	        ordemServicoService.alterarOrdemServico(ordemServico);
 	        redirectAttributes.addFlashAttribute("sucesso", "Ordem de serviço executada com sucesso!");
@@ -298,13 +311,12 @@ public class OrdemServicoController {
 	RedirectAttributes redirectAttributes) {	
 		if(cpf == null || cpf.isEmpty())
 			return "ordem-servico/cadastrar";
-		
-		ClienteService clienteService = new ClienteService();
-		
+				
 		try {
+			ClienteService clienteService = new ClienteService();
 			Cliente cliente = clienteService.pesquisarPorCpf(cpf);
 			
-			if(cliente != null) {				
+			if(cliente != null) {
 				redirectAttributes.addAttribute("idCliente", cliente.getId());
 				return "redirect:/ordemServico/cadastrarOrdemServico";
 			}

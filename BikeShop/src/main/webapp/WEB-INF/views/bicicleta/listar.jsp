@@ -1,113 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ page import="br.gasc.utils.CpfUtil" %>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Clientes - GASC Bike Lab</title>
-	<style>
-		body {
-			background-color: #f4f4f5;
-		}
-
-		.conteudo-principal {
-			padding: 32px;
-			max-width: 1100px;
-			margin: 0 auto;
-		}
-
-		.topo-pagina {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			margin-bottom: 24px;
-		}
-
-		.topo-pagina h1 {
-			color: #18181b;
-			font-size: 24px;
-			margin: 0;
-		}
-
-		.btn-novo {
-			background-color: #f97316;
-			color: #ffffff;
-			text-decoration: none;
-			font-size: 14px;
-			font-weight: 600;
-			padding: 10px 18px;
-			border-radius: 6px;
-			transition: background-color 0.2s;
-		}
-
-		.btn-novo:hover {
-			background-color: #ea580c;
-		}
-
-		.alerta-sucesso {
-			color: #166534;
-			background-color: #dcfce7;
-			border: 1px solid #86efac;
-			padding: 12px 16px;
-			border-radius: 6px;
-			margin-bottom: 20px;
-			font-size: 14px;
-			font-weight: 500;
-		}
-
-		.mensagem-vazia {
-			background-color: #ffffff;
-			padding: 32px;
-			text-align: center;
-			border-radius: 8px;
-			color: #52525b;
-			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-		}
-
-		.tabela-container {
-			background-color: #ffffff;
-			border-radius: 8px;
-			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-			overflow-x: auto; /* Evita quebrar o layout em telas menores */
-		}
-
-		table {
-			width: 100%;
-			border-collapse: collapse;
-			text-align: left;
-		}
-
-		thead {
-			background-color: #18181b;
-			color: #ffffff;
-		}
-
-		th {
-			padding: 14px 16px;
-			font-size: 13px;
-			font-weight: 600;
-			text-transform: uppercase;
-			letter-spacing: 0.5px;
-			text-align: center;
-		}
-
-		td {
-			padding: 14px 16px;
-			font-size: 14px;
-			color: #27272a;
-			border-bottom: 1px solid #e4e4e7;
-			text-align: center;
-		}
-
-		tbody tr:last-child td {
-			border-bottom: none;
-		}
-
-		tbody tr:hover {
-			background-color: #fafafa;
-		}
-	</style>
+	<title>Bicicletas - GASC Bike</title>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/listar-bicicleta.css">
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/cabecalho.jsp" %>
@@ -152,7 +52,7 @@
 									<td>${ bicicleta.tamanhoQuadro }</td>
 									<td>${ bicicleta.numeroSerie }</td>
 									<td>${ bicicleta.anoFabricacao }</td>
-									<td>${ bicicleta.proprietario.cpf }</td>
+									<td>${ CpfUtil.cpfFormatado(bicicleta.proprietario.cpf) }</td>
 								</tr>
 							</c:forEach>
 						</tbody>

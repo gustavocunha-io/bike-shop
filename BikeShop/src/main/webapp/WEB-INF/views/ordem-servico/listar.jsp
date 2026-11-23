@@ -1,13 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ page import="br.gasc.utils.DataUtil" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Lista de Ordens de Serviços</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/ordem-servico.css">
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-4.1.0.js"></script>
+	<meta charset="UTF-8">
+	<title>Ordens de Serviços - GASC Bike</title>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/ordem-servico.css">
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-4.1.0.js"></script>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/cabecalho.jsp" %>
@@ -73,7 +74,7 @@
 						<tbody>
 							<c:forEach var="ordemServico" items="${ ordensServicosList }">
 								<tr id="ordem_${ ordemServico.id }">
-									<td><fmt:formatDate value="${ ordemServico.dataAgendamento }" pattern="dd/MM/yyyy"/></td>
+									<td>${ DataUtil.dataFormatada(ordemServico.dataAgendamento) }</td>
 									<td>${ ordemServico.cliente != null ? ordemServico.cliente.nome : 'Sem proprietário' }</td>
 									<td>${ ordemServico.bicicleta.marca } ${ ordemServico.bicicleta.modelo }</td>
 									<td>
@@ -110,7 +111,6 @@
 		</c:choose>
 	</div>
 
-	<!-- Modal Detalhes via Ajax -->
 	<div id="modalDetalhes" class="modal-fundo">
 		<div class="modal-conteudo">
 			<h2>Detalhes da Ordem de Serviço #<span id="detalheOsId"></span></h2>
@@ -132,6 +132,13 @@
 		    }, "html").fail(function (xhr) {
 		        $("#detalheOsCorpo").html("<p>Falha na requisição AJAX (HTTP " + xhr.status + ").</p>");
 		    });
+		}
+		
+		function cancelarOrdemServico(id) {
+			$.post("${pageContext.request.contextPath}/ordemServico/cancelarOrdemServicoAjax", { 'id': id }, function () {
+				$("#status_" + id).html('<span class="badge-status status-CANCELADA">Cancelada</span>');
+				$("#acao_" + id).html('<button type="button" class="btn-info" onclick="abrirDetalhesOrdem(' + id + ');">Detalhes</button>');
+			});
 		}
 	</script>
 </body>

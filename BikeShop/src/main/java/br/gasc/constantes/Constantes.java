@@ -18,6 +18,14 @@ public final class Constantes {
 	// Mensagens de sucesso cliente.
 	public static final String MSG_SUCESSO_CADASTRO_CLIENTE = "Status: cliente cadastrado com sucesso";
 	
+	// Mensagens de erro bicicleta
+	public static final String MSG_ERRO_BICICLETA_NULA = "Erro: insira os dados da bicicleta";
+	public static final String MSG_ERRO_ID_BICICLETA_NULO = "Erro: informações da bicicleta não encontradas";
+	public static final String MSG_ERRO_MARCA_BICICLETA_NULA = "Erro: insira a marca da bicicleta";
+	public static final String MSG_ERRO_MODELO_BICICLETA_NULO = "Erro: insira o modelo da bicicleta";
+	public static final String MSG_ERRO_TIPO_BICICLETA_NULO = "Erro: selecione o tipo da bicicleta";
+	public static final String MSG_ERRO_ANO_FABRICACAO_BICICLETA_FUTURO = "Erro: o ano de fabricação não pode ser futuro";
+	
 	//Mensagens de sucesso bicicleta.
 	public static final String MSG_SUCESSO_CADASTRO_BICICLETA = "Status: bicicleta cadastrada com sucesso";
 	
@@ -34,6 +42,7 @@ public final class Constantes {
 	
 	// Mensagem de erro ordem servico.
 	public static final String MSG_ERRO_ORDEM_SERVICO_NULA = "Erro: a ordem de servico não pode ser nula";
+	public static final String MSG_ERRO_DATA_AGENDAMENTO_PASSADA = "Erro: a data do agendamento não pode ser passada";
 	public static final String MSG_ERRO_SERVICO_MENOR_QUE_1 = "Erro: insira ao menos 1 serviço para continuar";
 	public static final String MSG_ERRO_CANCELAR_ORDEM_SERVICO = "Erro: não foi possível cancelar a ordem de serviço";
 	

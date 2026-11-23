@@ -1,7 +1,7 @@
 package br.gasc.controller;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -71,20 +71,18 @@ public class HistoricoController {
 
 	@RequestMapping(value = "relatorio")
 	public String relatorio(
-	@RequestParam(value = "dataInicio", required = false) String dataInicioStr,
-	@RequestParam(value = "dataFim", required = false) String dataFimStr,
+	@RequestParam(value = "dataInicio", required = false) LocalDate dataInicio,
+	@RequestParam(value = "dataFim", required = false) LocalDate dataFim,
 	Model model) {
-		if (dataInicioStr == null || dataInicioStr.isEmpty() || dataFimStr == null || dataFimStr.isEmpty())
+		if (dataInicio == null || dataFim == null)
 			return "historico/relatorio";
 
-		model.addAttribute("dataInicio", dataInicioStr);
-		model.addAttribute("dataFim", dataFimStr);
+		model.addAttribute("dataInicio", dataInicio);
+		model.addAttribute("dataFim", dataFim);
 
 		try {
-			Date dataInicio = Date.valueOf(dataInicioStr);
-			Date dataFim = Date.valueOf(dataFimStr);
 
-			if (dataInicio.after(dataFim)) {
+			if (dataInicio.isAfter(dataFim)) {
 				model.addAttribute("erro", "A data inicial não pode ser maior que a data final.");
 				return "historico/relatorio";
 			}

@@ -1,13 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ page import="br.gasc.utils.DataUtil" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Registrar Execução - Ordem de Serviço #${ ordemServico.id }</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/ordem-servico.css">
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-4.1.0.js"></script>
+	<meta charset="UTF-8">
+	<title>Registrar Execução - Ordem de Serviço #${ ordemServico.id }</title>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/ordem-servico.css">
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-4.1.0.js"></script>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/cabecalho.jsp" %>
@@ -44,7 +45,7 @@
 			</p>
 			<p>
 				<strong>Data de Agendamento:</strong>
-				<fmt:formatDate value="${ ordemServico.dataAgendamento }" pattern="dd/MM/yyyy"/>
+				${  DataUtil.dataFormatada(ordemServico.dataAgendamento) }
 			</p>
 			<p>
 				<strong>Status Atual:</strong>

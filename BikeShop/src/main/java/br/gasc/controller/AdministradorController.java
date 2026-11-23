@@ -13,9 +13,11 @@ import br.gasc.dao.DAO;
 import br.gasc.model.Administrador;
 import br.gasc.service.AdministradorService;
 
+import jakarta.servlet.http.HttpSession;
+
 import static br.gasc.constantes.Constantes.*;
 
-import jakarta.servlet.http.HttpSession;
+
 
 @Controller
 public class AdministradorController {
@@ -27,7 +29,7 @@ public class AdministradorController {
 	    admin.setLogin("gustavo");
 	    admin.setSenha(BCrypt.hashpw("123456", BCrypt.gensalt()));
 	    new DAO<Administrador>(Administrador.class).inserir(admin);
-	    
+	   
 	    return "loginAdmin";
 	}
 	

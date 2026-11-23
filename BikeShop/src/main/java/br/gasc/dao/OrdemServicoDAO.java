@@ -1,6 +1,5 @@
 package br.gasc.dao;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -87,7 +86,7 @@ public class OrdemServicoDAO extends DAO<OrdemServico> {
 		}
 	}
 	
-	public List<OrdemServico> listarHistoricoPorPeriodo(Date dataInicio, Date dataFim) {
+	public List<OrdemServico> listarHistoricoPorPeriodo(LocalDate dataInicio, LocalDate dataFim) {
 		EntityManager entityManager = new JPAUtil().getEntityManager();
 		try {
 			TypedQuery<OrdemServico> query = entityManager.createQuery(
